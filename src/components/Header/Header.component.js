@@ -20,7 +20,7 @@ const styles = {
   },
   headingText: {
     fontSize: 19,
-    fontFamily: 'Roboto',
+    fontFamily: 'proxima-nov',
     fontWeight: '700',
     color: 'white',
   },
