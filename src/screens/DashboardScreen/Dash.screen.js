@@ -1,30 +1,14 @@
 import React, {Component} from 'react';
-import {Text, View, Dimensions, StyleSheet} from 'react-native';
+import {Text, View, Dimensions, StyleSheet, ScrollView} from 'react-native';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import {Header} from '../../components';
+import {Header, DashItem} from '../../components';
 
 const FirstRoute = () => {
   return (
-    <View style={[styles.scene, {backgroundColor: '#fff'}]}>
-      <View
-        style={{
-          height: '35%',
-          backgroundColor: 'white',
-          marginHorizontal: 7,
-          marginVertical: 5,
-          borderRadius: 3,
-          borderWidth: 0,
-          borderColor: 'black',
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 4,
-          },
-          shadowOpacity: 0.32,
-          shadowRadius: 5.46,
-          elevation: 9,
-        }}
-      />
+    <View style={{flex:1}}>
+      <DashItem />
+      <DashItem />
+      <DashItem />
     </View>
   );
 };
@@ -34,15 +18,15 @@ const renderTabBar = props => (
     {...props}
     indicatorStyle={{backgroundColor: 'white'}}
     style={{backgroundColor: '#2d768a'}}
-    activeColor="#f2893c"
-    labelStyle={{fontSize: 15, fontFamily: 'Roboto'}}
-    indicatorStyle={{backgroundColor: '#f2893c', height: 3}}
+    activeColor="#ea3149"
+    labelStyle={{fontSize: 15, fontFamily: 'proxima-semibold'}}
+    indicatorStyle={{backgroundColor: '#ea3149', height: 3}}
   />
 );
 
 export default class DashBoard extends Component {
   static navigationOptions = {
-    header: () => <Header />,
+    header: () => <Header title="Order List" backBtn={false} />,
   };
 
   constructor(props) {
