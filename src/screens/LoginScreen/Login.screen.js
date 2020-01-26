@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { colors, assets } from '../../js/constants';
-// import Icon from "react-native-vector-icons/Ionicons";
-import LoginTextInput from '../../components/LoginTextInput';
+import { TextInput } from "../../components";
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Login = props => {
   // const [valueToggleRememberMe, setToggleRememberMe] = React.useState(false);
-
 
   return (
     <View style={styles.mainContainer}>
@@ -17,28 +16,16 @@ const Login = props => {
       />
       <View style={styles.inputBoxesContainer}>
         <View style={styles.inputBoxView}>
-          <LoginTextInput placeholder="Username" />
+          <TextInput placeholder="Username" />
         </View>
         <View style={styles.inputBoxView}>
-          <LoginTextInput placeholder="Password" />
+          <TextInput placeholder="Password" />
         </View>
-        {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 18 }}>
-          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-            <TouchableOpacity onPress={() => setToggleRememberMe(!valueToggleRememberMe)}>
-              {valueToggleRememberMe ?
-                <Icon color='#62757f' size={30} name="md-radio-button-on" /> :
-                <Icon color='#62757f' size={30} name="md-radio-button-off" />}
-            </TouchableOpacity>
-            <Text style={{ marginLeft: 15, color: '#62757f' }}>Remember me</Text>
-          </View>
-          <Text style={{ color: '#62757f' }}>Forgot Password</Text>
-        </View> */}
         <TouchableOpacity
           style={styles.touchableBtnLogin}
           onPress={() => props.navigation.navigate('Dashboard')}>
           <Text style={styles.loginText}>Login</Text>
         </TouchableOpacity>
-        {/* <Text style={{ marginTop: 20, alignSelf: 'center', color: '#62757f' }}>Privacy and Terms</Text> */}
         <View />
       </View>
     </View>
@@ -61,5 +48,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  loginText: { color: colors.white, fontSize: 16 },
+  loginText: { color: colors.white, fontSize: 16, fontFamily: 'proxima-regular', },
 });

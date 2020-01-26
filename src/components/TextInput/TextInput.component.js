@@ -16,5 +16,5 @@ const LoginTextInput = props => {
 export default LoginTextInput;
 
 const styles = StyleSheet.create({
-  inputContainer: {height: 40, borderColor: '#F6F6F7', borderBottomWidth: 3},
+  inputContainer: {height: 40, borderColor: '#F6F6F7', borderBottomWidth: 3,fontFamily: 'proxima-regular'},
 });
