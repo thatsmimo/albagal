@@ -31,16 +31,15 @@ local.properties
 
 # node.js
 #
+yarn.lock
 node_modules/
 npm-debug.log
 yarn-error.log
-yarn.lock
+
 
 # BUCK
 buck-out/
 \.buckd/
-*.keystore
-!debug.keystore
 
 # fastlane
 #
@@ -58,3 +57,4 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+/.project
