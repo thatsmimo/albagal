@@ -19,7 +19,7 @@ const renderTabBar = props => (
     indicatorStyle={{backgroundColor: 'white'}}
     style={{backgroundColor: '#2d768a'}}
     activeColor="#ea3149"
-    labelStyle={{fontSize: 15, fontFamily: 'proxima-semibold'}}
+    labelStyle={{fontSize: 15, fontFamily: 'proxima-regular'}}
     indicatorStyle={{backgroundColor: '#ea3149', height: 3}}
   />
 );
