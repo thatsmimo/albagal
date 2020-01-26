@@ -34,7 +34,7 @@ const DrawerNavigator = createDrawerNavigator(
     AfterLogin: AfterLogin,
   },
   {
-    contentComponent: props => <SideBar />,
+    contentComponent: props => <SideBar {...props}/>,
     drawerBackgroundColor: 'rgba(255,255,255,.9)',
     overlayColor: 'rgba(0,0,0,0.5)',
     contentOptions: {

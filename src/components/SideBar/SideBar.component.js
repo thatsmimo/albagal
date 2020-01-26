@@ -1,23 +1,47 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableNativeFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { __ } from "../../js/constants";
 
-const SideBar = () => {
+const SideBar = (props) => {
+
   return (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
-      <View style={{ backgroundColor: '#2d768a', height: 150, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16 }}>
-        <Icon size={60} name="md-contact" />
-        <Text style={{ fontSize: 20, fontFamily: 'proxima-regular', marginLeft: 18 }}>John Doe</Text>
+    <View style={styles.mainContainer}>
+      <View style={styles.header}>
+        <Icon size={60} name="md-contact" color={'white'} />
+        <Text style={styles.name}>John Doe</Text>
       </View>
-
-
-      <View style={{ marginHorizontal: 20, marginTop: 20 }}>
-        <Text style={{ fontSize: 20, fontFamily: 'proxima-regular', marginVertical: 15 }}>Order</Text>
-        <Text style={{ fontSize: 20, fontFamily: 'proxima-regular', marginVertical: 15 }}>Change Language</Text>
-        <Text style={{ fontSize: 20, fontFamily: 'proxima-regular', marginVertical: 15 }}>Logout</Text>
+      <View style={styles.menuItemsContainer}>
+        <TouchableNativeFeedback
+          background={TouchableNativeFeedback.SelectableBackground()}>
+          <View style={styles.menuEachView}>
+            <Text style={styles.menuItemText}>{__('Order', 'ar')}</Text>
+          </View>
+        </TouchableNativeFeedback>
+        <TouchableNativeFeedback
+          background={TouchableNativeFeedback.SelectableBackground()}>
+          <View style={styles.menuEachView}>
+            <Text style={styles.menuItemText}>{__('Change Language', 'ar')}</Text>
+          </View>
+        </TouchableNativeFeedback>
+        <TouchableNativeFeedback onPress={() => props.navigation.navigate('Login')}
+          background={TouchableNativeFeedback.SelectableBackground()}>
+          <View style={styles.menuEachView}>
+            <Text style={styles.menuItemText}>{__('Logout', 'ar')}</Text>
+          </View>
+        </TouchableNativeFeedback>
       </View>
     </View>
   );
 };
 
 export default SideBar;
+
+const styles = StyleSheet.create({
+  mainContainer: { flex: 1, backgroundColor: 'white' },
+  header: { backgroundColor: '#2d768a', height: 150, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16 },
+  name: { fontSize: 20, fontFamily: 'proxima-regular', marginLeft: 18, color: 'white' },
+  menuItemsContainer: { marginVertical: 20 },
+  menuEachView: { height: 50, justifyContent: 'center', paddingHorizontal: 25 },
+  menuItemText: { fontSize: 20, fontFamily: 'proxima-regular' },
+});
