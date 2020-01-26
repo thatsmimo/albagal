@@ -14,7 +14,7 @@ import AppContainer from './src/navigation/MainNav';
 const App = () => {
   return (
     <>
-      <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+      <StatusBar backgroundColor="#00768B" barStyle="dark-content" />
       <AppContainer />
     </>
   );

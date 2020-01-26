@@ -6,3 +6,6 @@ export const Dashboard = _Dashboard;
 
 import _Details from './DetailsScreen/Details.screen';
 export const Details = _Details;
+
+import _AddNote from './AddNote/AddNote.screen'
+export const AddNote = _AddNote;

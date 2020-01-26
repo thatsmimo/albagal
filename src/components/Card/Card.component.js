@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import { View } from 'react-native';
 
-const Card = ({children}) => {
+const Card = ({ children }) => {
   return <View style={styles.container}>{children}</View>;
 };
 

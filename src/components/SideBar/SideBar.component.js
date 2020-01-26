@@ -39,7 +39,7 @@ export default SideBar;
 
 const styles = StyleSheet.create({
   mainContainer: { flex: 1, backgroundColor: 'white' },
-  header: { backgroundColor: '#2d768a', height: 150, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16 },
+  header: { backgroundColor: '#08768A', height: 150, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16 },
   name: { fontSize: 20, fontFamily: 'proxima-regular', marginLeft: 18, color: 'white' },
   menuItemsContainer: { marginVertical: 20 },
   menuEachView: { height: 50, justifyContent: 'center', paddingHorizontal: 25 },
