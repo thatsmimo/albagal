@@ -9,7 +9,7 @@ const BeforeLogin = createStackNavigator(
   {
     Login: Screens.Login,
   },
-  { headerMode: 'none' },
+  {headerMode: 'none'},
 );
 
 const AfterLogin = createStackNavigator(

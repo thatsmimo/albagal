@@ -9,6 +9,7 @@ import {
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import {Header, DashItem} from '../../components';
 
+
 const renderTabBar = props => (
   <TabBar
     {...props}
