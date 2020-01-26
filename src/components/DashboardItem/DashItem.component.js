@@ -1,44 +1,46 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Card} from '../index';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const DashItem = () => {
+const DashItem = props => {
   return (
-    <Card>
-      <View style={styles.container} />
-      <View style={styles.leftBorder}>
-        <Text style={styles.priceText}>Sar 140</Text>
-        <Text style={styles.dateText}>22 Jan, 2020</Text>
-      </View>
-      <View style={styles.rightDiv}>
-        <Text style={styles.nameText}>Jhon Doe</Text>
-        <View style={styles.addressDiv}>
-          <Icon name="md-pin" size={30} color="#1d65d2" />
-          <Text style={styles.addressText}>
-            1610 Alpha Avenue,Longview, TX 75601
-          </Text>
+    <TouchableOpacity style={styles.TouchableOpacity} onPress={props.onPress()}>
+      <Card>
+        <View style={styles.container} />
+        <View style={styles.leftBorder}>
+          <Text style={styles.priceText}>Sar 140</Text>
+          <Text style={styles.dateText}>22 Jan, 2020</Text>
         </View>
-        <View style={styles.phoneDiv}>
-          <Icon name="md-call" size={30} color="#1d65d2" />
-          <Text style={styles.phoneText}>89347239847</Text>
+        <View style={styles.rightDiv}>
+          <Text style={styles.nameText}>Jhon Doe</Text>
+          <View style={styles.addressDiv}>
+            <Icon name="md-pin" size={30} color="#1d65d2" />
+            <Text style={styles.addressText}>
+              1610 Alpha Avenue,Longview, TX 75601
+            </Text>
+          </View>
+          <View style={styles.phoneDiv}>
+            <Icon name="md-call" size={30} color="#1d65d2" />
+            <Text style={styles.phoneText}>89347239847</Text>
+          </View>
+          <View style={styles.rightButtomDiv}>
+            <View>
+              <Text style={styles.rightBtmItemHeadText}>Order Id</Text>
+              <Text style={styles.rightBtmItemitemText}>#23409</Text>
+            </View>
+            <View>
+              <Text style={styles.rightBtmItemHeadText}>Item</Text>
+              <Text style={styles.rightBtmItemitemText}>4</Text>
+            </View>
+            <View>
+              <Text style={styles.rightBtmItemHeadText}>Status</Text>
+              <Text style={styles.rightBtmItemitemText}>Pending</Text>
+            </View>
+          </View>
         </View>
-        <View style={styles.rightButtomDiv}>
-          <View>
-            <Text style={styles.rightBtmItemHeadText}>Order Id</Text>
-            <Text style={styles.rightBtmItemitemText}>#23409</Text>
-          </View>
-          <View>
-            <Text style={styles.rightBtmItemHeadText}>Item</Text>
-            <Text style={styles.rightBtmItemitemText}>4</Text>
-          </View>
-          <View>
-            <Text style={styles.rightBtmItemHeadText}>Status</Text>
-            <Text style={styles.rightBtmItemitemText}>Pending</Text>
-          </View>
-        </View>
-      </View>
-    </Card>
+      </Card>
+    </TouchableOpacity>
   );
 };
 
@@ -50,6 +52,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 8,
     borderTopLeftRadius: 8,
   },
+  TouchableOpacity: {height: '35%', marginVertical: 10},
   leftBorder: {
     width: '25%',
     borderRightColor: 'grey',

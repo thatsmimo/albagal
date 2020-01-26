@@ -8,7 +8,7 @@ const Card = ({children}) => {
 const styles = {
   container: {
     flexDirection: 'row',
-    height: '35%',
+    height: '100%',
     backgroundColor: 'white',
     marginHorizontal: 7,
     marginVertical: 5,
