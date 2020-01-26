@@ -1,15 +1,15 @@
 import React from 'react';
-import {createAppContainer, createSwitchNavigator} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import * as Screens from '../screens';
-import {SideBar} from '../components';
-import {createDrawerNavigator} from 'react-navigation-drawer';
+import { SideBar } from '../components';
+import { createDrawerNavigator } from 'react-navigation-drawer';
 
 const BeforeLogin = createStackNavigator(
   {
     Login: Screens.Login,
   },
-  {headerMode: 'none'},
+  { headerMode: 'none' },
 );
 
 const AfterLogin = createStackNavigator(
@@ -45,8 +45,8 @@ const DrawerNavigator = createDrawerNavigator(
 );
 
 const AppNavigator = createSwitchNavigator({
-  BeforeLogin,
   DrawerNavigator,
+  BeforeLogin,
 });
 
 export default createAppContainer(AppNavigator);

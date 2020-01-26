@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, Image } from 'react-native';
-import { Header } from '../../components/index';
+import { Header, ProductItem, NoteItem } from '../../components/index';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Api from '../../js/service/api';
+import styles from './style';
 
 export class Details extends Component {
 	static navigationOptions = ({ navigation }) => {
@@ -10,151 +12,140 @@ export class Details extends Component {
 			header: () => <Header title="Order List" navigation={navigation} backBtn={true} />,
 		};
 	};
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			item: props.navigation.getParam('item'),
+			products: [],
+			notes: [],
+		}
+	}
+
+	componentDidMount = async () => {
+		console.log('item', this.state.item);
+		let NotesResponse = await Api.get('orders/'+this.state.item.items[0].order_id+'/comments');
+		console.log("notes", NotesResponse);
+		var notes = [];
+		if(NotesResponse.items.length){
+			NotesResponse.items.map((element) => {
+				notes.push(element);
+			});
+			this.setState({notes: notes});
+		}
+		
+		this.state.item.items.map(async (element) => {
+		let productResponse = await Api.get('products/'+element.sku+'/media');
+			if(productResponse.length) {
+				element.image = 'https://albagal.com/ecommerce/pub/media/catalog/product/'+productResponse[0].file;
+			}
+			console.log("product" , element);
+			let products = this.state.products;
+			products.push(element);
+			this.setState({products: products});
+		})
+		
+	}
+
 	render() {
+		const { item, products, notes } = this.state;
 		return (
 			<ScrollView style={{ flex: 1 }}>
-				<View>
-					<View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 20 }}>
-						<View style={{marginTop:20}}>
-							<Text style={{ fontSize: 20, fontFamily: 'proxima-regular', color: '#464141' }}>Order Id</Text>
-							<Text style={{ fontSize: 36, fontFamily: 'proxima-bold' }}>1126</Text>
-						</View>
+				<View style={styles.topContainer}>
+					<View style={styles.margin20}>
+						<Text style={styles.orderIdText}>Order Id</Text>
+						<Text style={styles.orderIdValue}>{item.items[0].order_id}</Text>
+					</View>
+					<View>
 						<View>
-						<View>
-							<Text style={{ fontSize: 16, fontFamily: 'proxima-regular', color: '#464141' }}>Delivery Date</Text>
-							<Text style={{ fontSize: 19, fontFamily: 'proxima-bold' }}>26 Jan 2020</Text>
+							<Text style={styles.dateAndPriceText}>Delivery Date</Text>
+							<Text style={styles.dateAndPriceValue}>26 Jan 2020</Text>
 						</View>
-						<View style={{marginTop:10}}>
-							<Text style={{ fontSize: 16, fontFamily: 'proxima-regular', color: '#464141' }}>Price</Text>
-							<Text style={{ fontSize: 19, fontFamily: 'proxima-bold' }}>Sar 500</Text>
-						</View>
+						<View style={styles.marginTop10}>
+							<Text style={styles.dateAndPriceText}>Price</Text>
+							<Text style={styles.dateAndPriceValue}>{item.base_currency_code} {item.base_grand_total}</Text>
 						</View>
 					</View>
-					<View style={{ marginLeft: 35, marginTop: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
-						<Text style={{ color: '#f2893c', fontSize: 22, fontFamily: 'proxima-regular' }}>Status pending</Text>
-						<View style={{ marginRight: 32, borderColor: '#000', borderWidth: 1, borderRadius: 5 }} >
-							<Text style={{ fontFamily: 'proxima-regular', padding: 5 }}>Change Status</Text>
-						</View>
+				</View>
+				<View style={styles.statusContainer}>
+					<Text style={styles.statusText}>Status pending</Text>
+					<View style={styles.btn} >
+						<Text style={styles.btnText}>Change Status</Text>
 					</View>
-					<View style={{ marginTop: 25, marginLeft: 35 }}>
-						<Text style={{ fontSize: 22, fontFamily: 'proxima-bold', color: '#2d768a' }}>Customer :</Text>
-						<Text style={{ fontSize: 24, fontFamily: 'proxima-regular', marginLeft: 10 }}>Jhon Doe</Text>
-						<Text style={{ fontSize: 22, fontFamily: 'proxima-regular', color: '#5b93af', marginLeft: 10 }}>jhon.doe@gmail.com</Text>
-					</View>
-					<View style={{ flexDirection: 'row', marginTop: 30, marginLeft: 30 }}>
-						<View>
-							<Text style={{ fontSize: 20, fontFamily: 'proxima-bold', color: '#2d768a' }}>Address Information</Text>
-							<View style={{ marginLeft: 10 }}>
-								<Text style={{ fontSize: 16, fontFamily: 'proxima-bold', color: '#5e5961', marginTop: 10 }}>Shipping Address:</Text>
-								<View style={{ flexDirection: 'row', marginTop: 10, }}>
-									<Icon name="md-pin" size={25} color="#1d65d2" />
-									<Text style={{ fontSize: 18, fontFamily: 'proxima-regular', width: '90%', marginLeft: 10 }}>3633 Meadowcrest Lane</Text>
-								</View>
-								<View style={{ flexDirection: 'row', marginTop: 10, }}>
-									<Icon name="md-call" size={25} color="#1d65d2" />
-									<Text style={{ fontSize: 18, fontFamily: 'proxima-regular', width: '90%', marginLeft: 10 }}>89347239847</Text>
-								</View>
+				</View>
+				<View style={styles.customerContainer}>
+					<Text style={styles.customerHeading}>Customer :</Text>
+					<Text style={styles.nameText}>{item.customer_firstname + ' ' + item.customer_lastname}</Text>
+					<Text style={styles.emailText}>{item.customer_email}</Text>
+				</View>
+				<View style={styles.addressContainer}>
+					<View>
+						<Text style={styles.addressHeadingText}>Address Information</Text>
+						<View style={styles.marginLeft10}>
+							<Text style={styles.shippingAddressText}>Shipping Address:</Text>
+							<View style={styles.addressAndPhoneContainer}>
+								<Icon name="md-pin" size={25} color="#1d65d2" />
+								<Text style={styles.addressText}>{item.extension_attributes.shipping_assignments[0].shipping.address.street[0] + ', ' + item.extension_attributes.shipping_assignments[0].shipping.address.city + ', Post Code : ' + item.extension_attributes.shipping_assignments[0].shipping.address.postcode}</Text>
 							</View>
-						</View>
-					</View>
-					<View style={{ marginTop: 30, marginLeft: 30 }}>
-						<Text style={{ fontSize: 20, fontFamily: 'proxima-bold', color: '#2d768a' }}>Payment and Shipping Method</Text>
-						<View style={{ flexDirection: 'row', marginTop: 10, marginLeft: 10 }}>
-							<Text style={{ fontSize: 18, fontFamily: 'proxima-regular' }}>Payment Method:	</Text>
-							<Text style={{ fontSize: 18, fontFamily: 'proxima-bold' }}>Pay on Delivery</Text>
-						</View>
-						<View style={{ flexDirection: 'row', marginTop: 10, marginLeft: 10 }}>
-							<Text style={{ fontSize: 18, fontFamily: 'proxima-regular' }}>Time Slot:	</Text>
-							<Text style={{ fontSize: 18, fontFamily: 'proxima-bold' }}>11 am</Text>
-						</View>
-						<View style={{ flexDirection: 'row', marginTop: 10, marginLeft: 10 }}>
-							<Text style={{ fontSize: 18, fontFamily: 'proxima-regular' }}>Delivery Date:	</Text>
-							<Text style={{ fontSize: 18, fontFamily: 'proxima-bold' }}>26 Jan 2020</Text>
-						</View>
-					</View>
-					<View style={{ marginTop: 30, marginLeft: 30 }}>
-						<View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
-							<Text style={{ fontSize: 20, fontFamily: 'proxima-bold', color: '#2d768a' }}>Products (2 Items)</Text>
-						</View>
-						<View style={{ width: '90%', borderRadius: 8, borderWidth: 0.3, borderColor: '#867f7f', flexDirection: 'row', marginTop: 10, minHeight:110 }}>
-							<View style={{ borderTopLeftRadius: 8, borderBottomLeftRadius: 8, backgroundColor: '#e0aa7b', width: 10, height: '100%' }}></View>
-							<View style={{ marginLeft: 10, marginTop: 10, flexDirection:'row'}}>
-								<Image style={{height:80,width:80}} resizeMode='center' source={require('../../../assets/images/image2.jpg')}></Image>
-								<View style={{width:'65%' }}> 
-									<Text style={{ fontSize: 20, fontFamily: 'proxima-regular',marginLeft:10}} ellipsizeMode='tail' numberOfLines={2}>Hershey's Milk Choco</Text>
-									<View style={{flexDirection:'row', marginLeft:10, justifyContent:'space-between',marginTop:10}}>
-										<Text style={{ fontSize: 16, fontFamily: 'proxima-regular'}}>Sar 150</Text>
-										<Text style={{ fontSize: 16, fontFamily: 'proxima-regular'}}>Qty : 4</Text>
-									</View>
-								</View>
-							</View>
-						</View>
-						<View style={{ width: '90%', borderRadius: 8, borderWidth: 0.3, borderColor: '#867f7f', flexDirection: 'row', marginTop: 10, minHeight:110 }}>
-							<View style={{ borderTopLeftRadius: 8, borderBottomLeftRadius: 8, backgroundColor: '#e0aa7b', width: 10, height: '100%' }}></View>
-							<View style={{ marginLeft: 10, marginTop: 10, flexDirection:'row'}}>
-								<Image style={{height:80,width:80}} resizeMode='center' source={require('../../../assets/images/image1.jpg')}></Image>
-								<View style={{width:'65%' }}> 
-									<Text style={{ fontSize: 20, fontFamily: 'proxima-regular',marginLeft:10}} ellipsizeMode='tail' numberOfLines={2}>Nuttela</Text>
-									<View style={{flexDirection:'row', marginLeft:10, justifyContent:'space-between',marginTop:10}}>
-										<Text style={{ fontSize: 16, fontFamily: 'proxima-regular'}}>Sar 200</Text>
-										<Text style={{ fontSize: 16, fontFamily: 'proxima-regular'}}>Qty : 2</Text>
-									</View>
-								</View>
-							</View>
-						</View>
-					</View>
-					<View style={{ marginTop: 30, marginLeft: 30 }}>
-						<View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
-							<Text style={{ fontSize: 20, fontFamily: 'proxima-bold', color: '#2d768a' }}>Notes</Text>
-							<View style={{ marginRight: 32, borderColor: '#000', borderWidth: 1, borderRadius: 5 }} >
-								<Text style={{ fontFamily: 'proxima-regular', padding: 5 }}>Add Notes</Text>
-							</View>
-						</View>
-						<View style={{ width: '90%', borderRadius: 8, borderWidth: 0.3, borderColor: '#867f7f', flexDirection: 'row', marginTop: 10 }}>
-							<View style={{ borderTopLeftRadius: 8, borderBottomLeftRadius: 8, backgroundColor: '#e0aa7b', width: 10, height: '100%' }}></View>
-							<View style={{ marginLeft: 10, marginTop: 10 }}>
-								<Text style={{ fontSize: 20, fontFamily: 'proxima-bold' }}>Notes this a note</Text>
-								<View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-									<Text style={{ fontSize: 18, fontFamily: 'proxima-regular' }}>By</Text>
-									<Text style={{ fontSize: 20, fontFamily: 'proxima-bold', marginLeft: 10 }}>Admin</Text>
-								</View>
-								<View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center', marginBottom: 5 }}>
-									<Text style={{ fontSize: 18, fontFamily: 'proxima-regular' }}>On</Text>
-									<Text style={{ fontSize: 18, fontFamily: 'proxima-bold', marginLeft: 10 }}>26 Jan 2020</Text>
-								</View>
-							</View>
-						</View>
-						<View style={{ width: '90%', borderRadius: 8, borderWidth: 0.3, borderColor: '#867f7f', flexDirection: 'row', marginTop: 10 }}>
-							<View style={{ borderTopLeftRadius: 8, borderBottomLeftRadius: 8, backgroundColor: '#e0aa7b', width: 10, height: '100%' }}></View>
-							<View style={{ marginLeft: 10, marginTop: 10 }}>
-								<Text style={{ fontSize: 20, fontFamily: 'proxima-bold' }}>Notes this a note</Text>
-								<View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-									<Text style={{ fontSize: 18, fontFamily: 'proxima-regular' }}>By</Text>
-									<Text style={{ fontSize: 20, fontFamily: 'proxima-bold', marginLeft: 10 }}>Admin</Text>
-								</View>
-								<View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center', marginBottom: 5 }}>
-									<Text style={{ fontSize: 18, fontFamily: 'proxima-regular' }}>On</Text>
-									<Text style={{ fontSize: 18, fontFamily: 'proxima-bold', marginLeft: 10 }}>26 Jan 2020</Text>
-								</View>
-							</View>
-						</View>
-						<View style={{ width: '90%', borderRadius: 8, borderWidth: 0.3, borderColor: '#867f7f', flexDirection: 'row', marginTop: 10 }}>
-							<View style={{ borderTopLeftRadius: 8, borderBottomLeftRadius: 8, backgroundColor: '#e0aa7b', width: 10, height: '100%' }}></View>
-							<View style={{ marginLeft: 10, marginTop: 10 }}>
-								<Text style={{ fontSize: 20, fontFamily: 'proxima-bold' }}>Notes this a note</Text>
-								<View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center' }}>
-									<Text style={{ fontSize: 18, fontFamily: 'proxima-regular' }}>By</Text>
-									<Text style={{ fontSize: 20, fontFamily: 'proxima-bold', marginLeft: 10 }}>Admin</Text>
-								</View>
-								<View style={{ flexDirection: 'row', marginTop: 5, alignItems: 'center', marginBottom: 5 }}>
-									<Text style={{ fontSize: 18, fontFamily: 'proxima-regular' }}>On</Text>
-									<Text style={{ fontSize: 18, fontFamily: 'proxima-bold', marginLeft: 10 }}>26 Jan 2020</Text>
-								</View>
+							<View style={styles.addressAndPhoneContainer}>
+								<Icon name="md-call" size={25} color="#1d65d2" />
+								<Text style={styles.addressText}>{item.extension_attributes.shipping_assignments[0].shipping.address.telephone}</Text>
 							</View>
 						</View>
 					</View>
 				</View>
-				<View style={{ height: 30 }}></View>
+				<View style={styles.productsContainer}>
+					<Text style={styles.paymentHeading}>Payment and Shipping Method</Text>
+					<View style={styles.shippingElementContainer}>
+						<Text style={styles.regularHeading}>Payment Method:	</Text>
+						<Text style={styles.boldText}>{item.payment.additional_information[0]}</Text>
+					</View>
+					<View style={styles.shippingElementContainer}>
+						<Text style={styles.regularHeading}>Time Slot:	</Text>
+						<Text style={styles.boldText}></Text>
+					</View>
+					<View style={styles.shippingElementContainer}>
+						<Text style={styles.regularHeading}>Delivery Date:	</Text>
+						<Text style={styles.boldText}>{item.created_at}</Text>
+					</View>
+				</View>
+				<View style={styles.productsContainer}>
+					<View style={styles.headingWrapper}>
+						<Text style={styles.paymentHeading}>Products ({products.length} Items)</Text>
+					</View>
+					{products.map((element, key) => {
+						return(
+							<ProductItem
+								key={key}
+								image={element.image}
+								price={element.price_incl_tax}
+								currency={item.base_currency_code}
+								qty={element.qty_ordered}
+								name={element.name}
+							/>
+						)
+					})
+					}
+				</View>
+				<View style={styles.productsContainer}>
+					<View style={styles.headingWrapper}>
+						<Text style={styles.paymentHeading}>Notes</Text>
+						<View style={styles.btn} >
+							<Text style={styles.btnText}>Add Notes</Text>
+						</View>
+					</View>
+					{notes.map((element, key) => {
+						return(
+							<NoteItem 
+								key={key}
+								note={element.comment}
+								time={element.created_at} 
+							/>
+						)
+					})
+					}
+				</View>
+				<View style={styles.btmHeight}></View>
 			</ScrollView>
 		);
 	}
