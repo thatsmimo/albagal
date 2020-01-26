@@ -3,8 +3,6 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Header = props => {
-  console.log('props in header: ', props);
-
   return props.backBtn ? (
     <View style={styles.container}>
       <View style={styles.iconContainer}>

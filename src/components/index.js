@@ -9,3 +9,9 @@ export const DashItem = _DashItem;
 
 import _SideBar from './SideBar/SideBar.component';
 export const SideBar = _SideBar;
+
+import _ProductItem from './ProductItem/productItem.component';
+export const ProductItem = _ProductItem;
+
+import _NoteItem from './NoteItem/NoteItem.component';
+export const NoteItem = _NoteItem;

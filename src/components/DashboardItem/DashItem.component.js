@@ -1,41 +1,42 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
 import {Card} from '../index';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+
 const DashItem = props => {
   return (
-    <TouchableOpacity style={styles.TouchableOpacity} onPress={props.onPress}>
-      <Card>
+    <TouchableOpacity  onPress={props.onPress} style={styles.TouchableOpacity}>
+      <Card >
         <View style={styles.container} />
         <View style={styles.leftBorder}>
-          <Text style={styles.priceText}>Sar 240</Text>
+          <Text style={styles.priceText}>{props.currency} {props.totalPrice}</Text>
           <Text style={styles.dateText}>22 Jan, 2020</Text>
         </View>
         <View style={styles.rightDiv}>
-          <Text style={styles.nameText}>Jhon Doe</Text>
+          <Text style={styles.nameText}>{props.name}</Text>
           <View style={styles.addressDiv}>
             <Icon name="md-pin" size={30} color="#1d65d2" />
             <Text style={styles.addressText}>
-              1610 Alpha Avenue,Longview, TX 75601
+              {props.address}
             </Text>
           </View>
           <View style={styles.phoneDiv}>
             <Icon name="md-call" size={30} color="#1d65d2" />
-            <Text style={styles.phoneText}>89347239847</Text>
+            <Text style={styles.phoneText}>{props.phone}</Text>
           </View>
           <View style={styles.rightButtomDiv}>
             <View>
               <Text style={styles.rightBtmItemHeadText}>Order Id</Text>
-              <Text style={styles.rightBtmItemitemText}>#23409</Text>
+              <Text style={styles.rightBtmItemitemText}>{props.orderId}</Text>
             </View>
             <View>
               <Text style={styles.rightBtmItemHeadText}>Item</Text>
-              <Text style={styles.rightBtmItemitemText}>4</Text>
+              <Text style={styles.rightBtmItemitemText}>{props.itemCount}</Text>
             </View>
             <View>
               <Text style={styles.rightBtmItemHeadText}>Status</Text>
-              <Text style={styles.rightBtmItemitemText}>Pending</Text>
+              <Text style={styles.rightBtmItemitemText}>{props.status}</Text>
             </View>
           </View>
         </View>
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 8,
     borderTopLeftRadius: 8,
   },
-  TouchableOpacity: {height: '35%', marginVertical: 10},
+  TouchableOpacity: {flex:1, marginVertical:10},
   leftBorder: {
     width: '25%',
     borderRightColor: 'grey',
