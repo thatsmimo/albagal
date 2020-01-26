@@ -1,12 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
-import {Card} from '../index';
+import { View, Text, StyleSheet, TouchableOpacity, T } from 'react-native';
+import { Card } from '../index';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
 const DashItem = props => {
   return (
-    <TouchableOpacity  onPress={props.onPress} style={styles.TouchableOpacity}>
+    <TouchableOpacity onPress={props.onPress} style={styles.TouchableOpacity}>
       <Card >
         <View style={styles.container} />
         <View style={styles.leftBorder}>
@@ -16,13 +16,13 @@ const DashItem = props => {
         <View style={styles.rightDiv}>
           <Text style={styles.nameText}>{props.name}</Text>
           <View style={styles.addressDiv}>
-            <Icon name="md-pin" size={30} color="#1d65d2" />
+            <Icon name="md-pin" size={30} color='#08768A' />
             <Text style={styles.addressText}>
               {props.address}
             </Text>
           </View>
           <View style={styles.phoneDiv}>
-            <Icon name="md-call" size={30} color="#1d65d2" />
+            <Icon name="md-call" size={30} color='#08768A' />
             <Text style={styles.phoneText}>{props.phone}</Text>
           </View>
           <View style={styles.rightButtomDiv}>
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 8,
     borderTopLeftRadius: 8,
   },
-  TouchableOpacity: {flex:1, marginVertical:10},
+  TouchableOpacity: { flex: 1, marginVertical: 10, backgroundColor: 'white' },
   leftBorder: {
     width: '25%',
     borderRightColor: 'grey',
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#424040',
   },
-  rightDiv: {width: '74%', margin: 10},
+  rightDiv: { width: '74%', margin: 10 },
   nameText: {
     width: '70%',
     fontSize: 20,

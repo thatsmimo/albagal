@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { colors, assets } from '../../js/constants';
 import { TextInput } from "../../components";
-import AsyncStorage from '@react-native-community/async-storage';
 
 const Login = props => {
   // const [valueToggleRememberMe, setToggleRememberMe] = React.useState(false);
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
   touchableBtnLogin: {
     width: '95%',
     alignSelf: 'center',
-    backgroundColor: '#00768B',
+    backgroundColor: '#08768A',
     height: 45,
     marginTop: 70,
     alignItems: 'center',

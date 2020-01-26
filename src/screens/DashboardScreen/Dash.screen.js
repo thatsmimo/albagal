@@ -3,22 +3,19 @@ import {
   ScrollView,
   View,
   Dimensions,
-  StyleSheet,
-  TouchableOpacity,
 } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Header, DashItem } from '../../components/index';
 import Api from '../../js/service/api';
 
-
+//#ea3149
 const renderTabBar = props => (
   <TabBar
     {...props}
-    indicatorStyle={{ backgroundColor: 'white' }}
-    style={{ backgroundColor: '#2d768a' }}
-    activeColor="#ea3149"
-    labelStyle={{ fontSize: 15, fontFamily: 'proxima-regular' }}
-    indicatorStyle={{ backgroundColor: '#ea3149', height: 3 }}
+    style={{ backgroundColor: '#08768A' }}
+    activeColor="white"
+    labelStyle={{ fontSize: 15, fontFamily: 'proxima-regular', }}
+    indicatorStyle={{ backgroundColor: 'white', height: 3 }}
   />
 );
 

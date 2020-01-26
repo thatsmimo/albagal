@@ -14,19 +14,10 @@ const BeforeLogin = createStackNavigator(
 
 const AfterLogin = createStackNavigator(
   {
-    Dashboard: {
-      screen: Screens.Dashboard,
-    },
-    Details: {
-      screen: Screens.Details,
-    },
+    Dashboard: { screen: Screens.Dashboard, },
+    Details: { screen: Screens.Details, },
+    AddNote: { screen: Screens.AddNote, },
   },
-  //   {
-  //     headerMode: 'none',
-  //     navigationOptions: {
-  //       headerVisible: false,
-  //     },
-  //   },
 );
 
 const DrawerNavigator = createDrawerNavigator(
@@ -34,7 +25,7 @@ const DrawerNavigator = createDrawerNavigator(
     AfterLogin: AfterLogin,
   },
   {
-    contentComponent: props => <SideBar {...props}/>,
+    contentComponent: props => <SideBar {...props} />,
     drawerBackgroundColor: 'rgba(255,255,255,.9)',
     overlayColor: 'rgba(0,0,0,0.5)',
     contentOptions: {
