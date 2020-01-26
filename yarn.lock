@@ -5329,7 +5329,11 @@ react-native-screens@^2.0.0-alpha.29:
   dependencies:
     debounce "^1.2.0"
 
+<<<<<<< HEAD
 react-native-tab-view@^2.11.0:
+=======
+react-native-tab-view@^2.12.0:
+>>>>>>> 1f27fa24481fdc959fbcb510f6a342fb1c5609a9
   version "2.12.0"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-2.12.0.tgz#357c8632fd16a622ab16e6965779171bb00a85d0"
   integrity sha512-rjAicASp7RMiohZ0afjfzqbHDO9leeZCD6d9s9sXwrnf1qNiP6oixforKbmVFr+mgAfa8Q0k4kJwf1w9t0AY+A==

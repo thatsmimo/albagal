@@ -71,6 +71,18 @@
 		<string>Octicons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>proxima-bold.otf</string>
+		<string>proxima-light.otf</string>
+		<string>proxima-regular.otf</string>
+		<string>proxima-semibold.OTF</string>
+		<string>PROXIMANOVA-BLACK.OTF</string>
+		<string>PROXIMANOVA-BOLDIT.OTF</string>
+		<string>PROXIMANOVA-EXTRABOLD.OTF</string>
+		<string>PROXIMANOVA-LIGHTITALIC.OTF</string>
+		<string>PROXIMANOVA-REGITALIC.OTF</string>
+		<string>PROXIMANOVA-SEMIBOLD.OTF</string>
+		<string>proximanova-semibold.ttf</string>
+		<string>PROXIMANOVA-SEMIBOLDITALIC.OTF</string>
 	</array>
 </dict>
 </plist>
