@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Text,
   View,
@@ -6,24 +6,31 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import {Header, DashItem} from '../../components';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { Header, DashItem } from '../../components';
 
 
 const renderTabBar = props => (
   <TabBar
     {...props}
-    indicatorStyle={{backgroundColor: 'white'}}
-    style={{backgroundColor: '#2d768a'}}
+    indicatorStyle={{ backgroundColor: 'white' }}
+    style={{ backgroundColor: '#2d768a' }}
     activeColor="#ea3149"
-    labelStyle={{fontSize: 15, fontFamily: 'proxima-regular'}}
-    indicatorStyle={{backgroundColor: '#ea3149', height: 3}}
+    labelStyle={{ fontSize: 15, fontFamily: 'proxima-regular' }}
+    indicatorStyle={{ backgroundColor: '#ea3149', height: 3 }}
   />
 );
 
 export default class DashBoard extends Component {
-  static navigationOptions = {
-    header: () => <Header title="Order List" backBtn={false} />,
+  // static navigationOptions = {
+  //   header: () => <Header title="Order List" backBtn={false} />,
+  // };
+
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation;
+    return {
+      header: () => <Header title="Order List" navigation={navigation} backBtn={false} />,
+    };
   };
 
   constructor(props) {
@@ -31,16 +38,16 @@ export default class DashBoard extends Component {
     this.state = {
       index: 0,
       routes: [
-        {key: 'pending', title: 'Pending'},
-        {key: 'processing', title: 'Processing'},
-        {key: 'delivered', title: 'Delivered'},
+        { key: 'pending', title: 'Pending' },
+        { key: 'processing', title: 'Processing' },
+        { key: 'delivered', title: 'Delivered' },
       ],
     };
   }
 
   FirstRoute = () => {
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <DashItem onPress={this._onPressMoveToDetailsPage} />
         <DashItem onPress={this._onPressMoveToDetailsPage} />
       </View>
@@ -60,8 +67,8 @@ export default class DashBoard extends Component {
           processing: this.FirstRoute,
           delivered: this.FirstRoute,
         })}
-        onIndexChange={index => this.setState({index})}
-        initialLayout={{width: Dimensions.get('window').width}}
+        onIndexChange={index => this.setState({ index })}
+        initialLayout={{ width: Dimensions.get('window').width }}
         renderTabBar={renderTabBar}
       />
     );

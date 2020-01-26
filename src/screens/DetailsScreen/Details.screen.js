@@ -7,9 +7,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 //shipping details
 
 export class Details extends Component {
-	static navigationOptions = {
-		header: () => <Header title="Order Details" backBtn={true} />,
-	};
+	static navigationOptions = ({ navigation }) => {
+		const { params = {} } = navigation;
+		return {
+		  header: () => <Header title="Order List" navigation={navigation} backBtn={true} />,
+		};
+	  };
 	render() {
 		return (
 			<ScrollView style={{flex:1}}>
