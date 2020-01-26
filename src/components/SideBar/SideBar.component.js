@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const SideBar = () => {
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
-      <View style={{ backgroundColor: 'gray', height: 150, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16 }}>
+      <View style={{ backgroundColor: '#2d768a', height: 150, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16 }}>
         <Icon size={60} name="md-contact" />
         <Text style={{ fontSize: 20, fontFamily: 'proxima-regular', marginLeft: 18 }}>John Doe</Text>
       </View>

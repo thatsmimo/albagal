@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const DashItem = props => {
   return (
-    <TouchableOpacity style={styles.TouchableOpacity} onPress={props.onPress()}>
+    <TouchableOpacity style={styles.TouchableOpacity} onPress={props.onPress}>
       <Card>
         <View style={styles.container} />
         <View style={styles.leftBorder}>

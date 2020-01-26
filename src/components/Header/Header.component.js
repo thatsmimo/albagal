@@ -1,12 +1,21 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Header = props => {
+  console.log('props in header: ', props);
+
   return props.backBtn ? (
     <View style={styles.container}>
       <View style={styles.iconContainer}>
-        <Icon style={styles.icon} name="md-arrow-back" size={30} color="#fff" />
+        <TouchableOpacity onPress={() => props.navigation.goBack()}>
+          <Icon
+            style={styles.icon}
+            name="md-arrow-back"
+            size={35}
+            color="#fff"
+          />
+        </TouchableOpacity>
       </View>
       <View style={styles.textContainer}>
         <Text style={[styles.headingText, styles.marginLeft]}>
@@ -16,8 +25,15 @@ const Header = props => {
     </View>
   ) : (
     <View style={styles.container}>
+      <View style={styles.iconContainer}>
+        <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>
+          <Icon style={styles.icon} name="ios-menu" size={35} color="#fff" />
+        </TouchableOpacity>
+      </View>
       <View style={styles.textContainer}>
-        <Text style={styles.headingText}>{props.title}</Text>
+        <Text style={[styles.headingText, styles.marginLeft]}>
+          {props.title}
+        </Text>
       </View>
     </View>
   );
@@ -25,7 +41,7 @@ const Header = props => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 50,
+    height: 60,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -40,7 +56,7 @@ const styles = StyleSheet.create({
   },
   marginLeft: {marginLeft: '-20%'},
   headingText: {
-    fontSize: 19,
+    fontSize: 20,
     fontFamily: 'proxima-bold',
     color: 'white',
   },
@@ -49,7 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
-  icon: {marginLeft: 10},
+  icon: {marginLeft: 15},
 });
 
 export default Header;
