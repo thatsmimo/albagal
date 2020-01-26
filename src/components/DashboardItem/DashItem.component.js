@@ -9,7 +9,7 @@ const DashItem = props => {
       <Card>
         <View style={styles.container} />
         <View style={styles.leftBorder}>
-          <Text style={styles.priceText}>Sar 140</Text>
+          <Text style={styles.priceText}>Sar 240</Text>
           <Text style={styles.dateText}>22 Jan, 2020</Text>
         </View>
         <View style={styles.rightDiv}>
