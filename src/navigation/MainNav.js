@@ -36,8 +36,8 @@ const DrawerNavigator = createDrawerNavigator(
 );
 
 const AppNavigator = createSwitchNavigator({
-  DrawerNavigator,
   BeforeLogin,
+  DrawerNavigator,
 });
 
 export default createAppContainer(AppNavigator);

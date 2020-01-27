@@ -17,7 +17,7 @@ export class AddNote extends Component {
     this.state = {
       orderId: props.navigation.getParam('orderId'),
       text: '',
-      isVisiblePublic: "0",
+      isVisiblePublic: 0,
       status: props.navigation.getParam('status'),
     }
     console.log(props.navigation.getParam('orderId'), props.navigation.getParam('status'));
@@ -74,10 +74,12 @@ export class AddNote extends Component {
             value={this.state.text} />
 
           <Picker
-            selectedValue={this.state.language}
+            selectedValue={this.state.isVisiblePublic}
             style={{ height: 50, width: '70%', fontSize: 30, fontFamily: 'proxima-regular', marginTop: 15 }}
-            onValueChange={(itemValue, itemIndex) =>
+            onValueChange={(itemValue, itemIndex) =>{
+              console.log(itemValue, itemIndex);
               this.setState({ isVisiblePublic: itemValue })
+            }
             }>
             <Picker.Item label="Private" value="0" />
             <Picker.Item label="Public" value="1" />

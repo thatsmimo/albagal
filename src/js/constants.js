@@ -32,6 +32,9 @@ export const language = {
   'Qty': 'الكمية',
   'Notes': 'ملاحظات',
   'Add Notes': 'إضافة ملاحظات',
+  'Password': 'كلمه السر',
+  'Username': 'اسم المستخدم',
+  'Login': 'تسجيل الدخول'
 }
 
 export const __ = (param, lang) => {
