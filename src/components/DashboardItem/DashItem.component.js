@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, T } from 'react-native';
-import { Card } from '../Card/Card.component';
+import Card from '../Card/Card.component';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
