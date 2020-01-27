@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ToastAndroid } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { colors, assets } from '../../js/constants';
 import { TextInput } from "../../components";
 import { __ } from '../../js/constants';
-import { storeData, getData } from '../../js/Helper';
+import { storeData, getData, showToast } from '../../js/Helper';
 import Api from '../../js/service/api'
 
 
@@ -45,13 +45,7 @@ const Login = props => {
     let response = await Api.post('integration/customer/token', JSON.stringify(payload));
     if (typeof response == 'object') {
       setLoader(false);
-      ToastAndroid.showWithGravityAndOffset(
-        'Invalid Credentials',
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        0,
-        50,
-      );
+      showToast('Invalid Credentials');
     } else {
       console.log(response);
       let userDetails = await Api.getUserDetails('customers/me', response);

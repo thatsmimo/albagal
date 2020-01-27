@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
+import { Linking, ToastAndroid } from "react-native";
 
 export const storeData = async (key, value) => {
   // key and value are string 
@@ -32,3 +33,23 @@ export const removeData = async (key) => {
   }
 }
 
+//  universal method to redirect address to google map
+export const openMap = (query) => {
+  Linking.openURL(`https://www.google.com/maps/search/?api=1&query= ${query}`);
+};
+
+//  universal method to redirect phone to dialer screen in phone
+export const openTelephone = (phoneNumber) => {
+  Linking.openURL(`tel:${phoneNumber}`);
+};
+
+// universal method to show toast
+export const showToast = (text) => {
+  ToastAndroid.showWithGravityAndOffset(
+    text,
+    ToastAndroid.LONG,
+    ToastAndroid.BOTTOM,
+    0,
+    50,
+  );
+};

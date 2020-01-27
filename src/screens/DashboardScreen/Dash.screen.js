@@ -81,6 +81,7 @@ export default class DashBoard extends Component {
                 itemCount={element.total_item_count}
                 orderId={element.items[0].order_id}
                 address={element.extension_attributes.shipping_assignments[0].shipping.address.street[0] + ', ' + element.extension_attributes.shipping_assignments[0].shipping.address.city + ', ' + element.extension_attributes.shipping_assignments[0].shipping.address.postcode}
+                gMapQuery={element.extension_attributes.shipping_assignments[0].shipping.address.street[0] + ', ' + element.extension_attributes.shipping_assignments[0].shipping.address.city}
                 phone={element.extension_attributes.shipping_assignments[0].shipping.address.telephone}
                 status='Pending'
                 onPress={() => this._onPressMoveToDetailsPage(element)}
