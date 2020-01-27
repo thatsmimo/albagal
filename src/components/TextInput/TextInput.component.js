@@ -11,6 +11,7 @@ const LoginTextInput = props => {
       secureTextEntry={props.secure}
       KeyboardType={props.type}
       ReturnKeyType={props.ReturnKeyType}
+      value={props.value}
     />
   );
 };

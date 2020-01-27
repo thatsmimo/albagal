@@ -55,7 +55,8 @@ const Login = props => {
     } else {
       console.log(response);
       let userDetails = await Api.getUserDetails('customers/me', response);
-      storeData('userDetails', JSON.stringify(userDetails));
+      await storeData('userDetails', JSON.stringify(userDetails));
+      props.navigation.navigate('Dashboard');
       setLoader(false);
     }
   }
@@ -76,10 +77,10 @@ const Login = props => {
         />
         <View style={styles.inputBoxesContainer}>
           <View style={styles.inputBoxView}>
-            <TextInput placeholder={__('Username', language)} type='email-address' onChangeText={(text) => setUsername(text)} />
+            <TextInput value={username} placeholder={__('Username', language)} type='email-address' onChangeText={(text) => setUsername(text)} />
           </View>
           <View style={styles.inputBoxView}>
-            <TextInput secure={true} ReturnKeyType='done' placeholder={__('Password', language)} onChangeText={(text) => setPassword(text)} />
+            <TextInput value={password} secure={true} ReturnKeyType='done' placeholder={__('Password', language)} onChangeText={(text) => setPassword(text)} />
           </View>
           <TouchableOpacity
             style={styles.touchableBtnLogin}
