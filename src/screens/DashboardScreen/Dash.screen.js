@@ -5,10 +5,11 @@ import {
   Dimensions,
 } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import LottieView from 'lottie-react-native';
 import { Header, DashItem } from '../../components/index';
 import Api from '../../js/service/api';
 
-//#ea3149
+
 const renderTabBar = props => (
   <TabBar
     {...props}
@@ -47,8 +48,18 @@ export default class DashBoard extends Component {
   componentDidMount = async () => {
     try {
       let response = await Api.get('orders?searchCriteria[filter_groups][0][filters][0][field]=status& searchCriteria[filter_groups][0][filters][0][value]=pending', '');
-      this.setState({ pendingList: response.items, loading: false })
-      console.log(response);
+      
+      this.setState({ pendingList: response.items, loading: false });
+
+      let processingResponse = await Api.get('orders?searchCriteria[filter_groups][0][filters][0][field]=status&searchCriteria[filter_groups][0][filters][0][value]=processing', '');
+
+      let completedResponse = await Api.get('orders?searchCriteria[filter_groups][0][filters][0][field]=status&searchCriteria[filter_groups][0][filters][0][value]=complete', '');
+      
+      this.setState({
+        processing: processingResponse.items,
+        delivered: completedResponse.items
+      })
+      console.log("completedResponseResponse",completedResponse);
     } catch (error) {
       console.log(error);
     }
@@ -82,6 +93,67 @@ export default class DashBoard extends Component {
     );
   };
 
+  SecondRoute = () => {
+    if(this.state.processing.length == 0){
+      return <LottieView source={require('../../../assets/data.json')} autoPlay loop />;
+    }
+    return (
+      <ScrollView>
+        <View style={{ flex: 1 }}>
+          {this.state.processing.map((element, key) => {
+            return (
+              <DashItem
+                key={key}
+                currency={element.base_currency_code}
+                totalPrice={element.base_grand_total}
+                name={element.customer_firstname + ' ' + element.customer_lastname}
+                itemCount={element.total_item_count}
+                orderId={element.items[0].order_id}
+                address={element.extension_attributes.shipping_assignments[0].shipping.address.street[0] + ', ' + element.extension_attributes.shipping_assignments[0].shipping.address.city + ', ' + element.extension_attributes.shipping_assignments[0].shipping.address.postcode}
+                phone={element.extension_attributes.shipping_assignments[0].shipping.address.telephone}
+                status='Pending'
+                onPress={() => this._onPressMoveToDetailsPage(element)}
+              />
+            )
+          })
+          }
+        </View>
+      </ScrollView>
+    );
+  }
+
+
+  ThirdRoute = () => {
+    if(this.state.delivered.length == 0){
+      return <LottieView source={require('../../../assets/data.json')} autoPlay loop />;
+    }
+    return (
+      <ScrollView>
+        <View style={{ flex: 1 }}>
+          {this.state.delivered.map((element, key) => {
+            return (
+              <DashItem
+                key={key}
+                currency={element.base_currency_code}
+                totalPrice={element.base_grand_total}
+                name={element.customer_firstname + ' ' + element.customer_lastname}
+                itemCount={element.total_item_count}
+                orderId={element.items[0].order_id}
+                address={element.extension_attributes.shipping_assignments[0].shipping.address.street[0] + ', ' + element.extension_attributes.shipping_assignments[0].shipping.address.city + ', ' + element.extension_attributes.shipping_assignments[0].shipping.address.postcode}
+                phone={element.extension_attributes.shipping_assignments[0].shipping.address.telephone}
+                status='Pending'
+                onPress={() => this._onPressMoveToDetailsPage(element)}
+              />
+            )
+          })
+          }
+        </View>
+      </ScrollView>
+    );
+  }
+
+
+
   _onPressMoveToDetailsPage = (element) => {
     this.props.navigation.navigate('Details', { item: element });
   };
@@ -93,8 +165,8 @@ export default class DashBoard extends Component {
           navigationState={this.state}
           renderScene={SceneMap({
             pending: () => this.FirstRoute(),
-            processing: this.FirstRoute,
-            delivered: this.FirstRoute,
+            processing:() => this.SecondRoute(),
+            delivered:() => this.ThirdRoute(),
           })}
           onIndexChange={index => this.setState({ index })}
           initialLayout={{ width: Dimensions.get('window').width }}
@@ -103,7 +175,7 @@ export default class DashBoard extends Component {
         />
       );
     } else {
-      return <View />;
+      return <LottieView source={require('../../../assets/data.json')} autoPlay loop />;
     }
   }
 }
