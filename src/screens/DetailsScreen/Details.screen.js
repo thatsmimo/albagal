@@ -133,7 +133,7 @@ export class Details extends Component {
           <View style={styles.headingWrapper}>
             <Text style={styles.paymentHeading}>Notes</Text>
             <TouchableOpacity style={{ marginRight: 35, width: 100, alignItems: 'flex-end' }}
-            // onPress={() => this.props.navigation.navigate('AddNote', { "orderId": item.items[0].order_id, "status": item.status })}
+            onPress={() => this.props.navigation.navigate('AddNote', { "orderId": item.items[0].order_id, "status": item.status })}
             >
               <View style={[styles.btnAdd, { flexDirection: 'row' }]} >
                 <Icon size={30} name="md-add-circle-outline" color='#08768A' />
