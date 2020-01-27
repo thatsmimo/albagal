@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, T } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Card from '../Card/Card.component';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import { openMap, openTelephone } from '../../js/Helper';
 
 const DashItem = props => {
   return (
@@ -15,16 +15,16 @@ const DashItem = props => {
         </View>
         <View style={styles.rightDiv}>
           <Text style={styles.nameText}>{props.name}</Text>
-          <View style={styles.addressDiv}>
+          <TouchableOpacity style={styles.addressDiv} onPress={() => openMap(props.gMapQuery)}>
             <Icon name="md-pin" size={30} color='#08768A' />
             <Text style={styles.addressText}>
               {props.address}
             </Text>
-          </View>
-          <View style={styles.phoneDiv}>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.phoneDiv} onPress={() => openTelephone(props.phone)}>
             <Icon name="md-call" size={30} color='#08768A' />
             <Text style={styles.phoneText}>{props.phone}</Text>
-          </View>
+          </TouchableOpacity>
           <View style={styles.rightButtomDiv}>
             <View>
               <Text style={styles.rightBtmItemHeadText}>Order Id</Text>

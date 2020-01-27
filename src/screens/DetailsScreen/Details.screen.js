@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Header, ProductItem, NoteItem } from '../../components/index';
+import { openMap, openTelephone } from "../../js/Helper";
 import Icon from 'react-native-vector-icons/Ionicons';
 import Api from '../../js/service/api';
 import styles from './style';
 
 export class Details extends Component {
   static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation;
     return {
       header: () => <Header title="Order List" navigation={navigation} backBtn={true} />,
     };
@@ -21,7 +21,6 @@ export class Details extends Component {
       notes: [],
     }
     console.log(props.navigation.getParam('item'));
-
   }
 
   componentDidMount = async () => {
@@ -46,7 +45,6 @@ export class Details extends Component {
       products.push(element);
       this.setState({ products: products });
     })
-
   }
 
   render() {
@@ -85,14 +83,16 @@ export class Details extends Component {
             <Text style={styles.addressHeadingText}>Address Information</Text>
             <View style={styles.marginLeft10}>
               <Text style={styles.shippingAddressText}>Shipping Address:</Text>
-              <View style={styles.addressAndPhoneContainer}>
+              <TouchableOpacity
+                style={styles.addressAndPhoneContainer}
+                onPress={() => openMap(item.extension_attributes.shipping_assignments[0].shipping.address.street[0] + ', ' + item.extension_attributes.shipping_assignments[0].shipping.address.city)}>
                 <Icon name="md-pin" size={25} color="#08768A" />
                 <Text style={styles.addressText}>{item.extension_attributes.shipping_assignments[0].shipping.address.street[0] + ', ' + item.extension_attributes.shipping_assignments[0].shipping.address.city + ', Post Code : ' + item.extension_attributes.shipping_assignments[0].shipping.address.postcode}</Text>
-              </View>
-              <View style={styles.addressAndPhoneContainer}>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.addressAndPhoneContainer} onPress={() => openTelephone(item.extension_attributes.shipping_assignments[0].shipping.address.telephone)}>
                 <Icon name="md-call" size={25} color="#08768A" />
                 <Text style={styles.addressText}>{item.extension_attributes.shipping_assignments[0].shipping.address.telephone}</Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -133,7 +133,7 @@ export class Details extends Component {
           <View style={styles.headingWrapper}>
             <Text style={styles.paymentHeading}>Notes</Text>
             <TouchableOpacity style={{ marginRight: 35, width: 100, alignItems: 'flex-end' }}
-            onPress={() => this.props.navigation.navigate('AddNote', { "orderId": item.items[0].order_id, "status": item.status })}
+              onPress={() => this.props.navigation.navigate('AddNote', { "orderId": item.items[0].order_id, "status": item.status })}
             >
               <View style={[styles.btnAdd, { flexDirection: 'row' }]} >
                 <Icon size={30} name="md-add-circle-outline" color='#08768A' />

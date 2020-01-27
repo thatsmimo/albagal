@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Text, View, ToastAndroid, TextInput, TouchableOpacity, Picker, KeyboardAvoidingView } from 'react-native';
-import { Header, ProductItem, NoteItem } from '../../components/index';
+import { Text, View, TextInput, TouchableOpacity, Picker, KeyboardAvoidingView } from 'react-native';
+import { Header } from '../../components/index';
 import Api from '../../js/service/api';
 import styles from './style';
+import { showToast } from "../../js/Helper";
 
 export class AddNote extends Component {
   static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation;
     return {
       header: () => <Header title="Order List" navigation={navigation} backBtn={true} />,
     };
@@ -19,20 +19,13 @@ export class AddNote extends Component {
       text: '',
       isVisiblePublic: 0,
       status: props.navigation.getParam('status'),
-    }
-    console.log(props.navigation.getParam('orderId'), props.navigation.getParam('status'));
+    };
   }
 
   _onPressAddNote = async () => {
 
     if (this.state.text == '') {
-      ToastAndroid.showWithGravityAndOffset(
-        'Please add your note.',
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        0,
-        50,
-      );
+      showToast('Please add your note.');
       return;
     }
 
@@ -49,19 +42,13 @@ export class AddNote extends Component {
 
     let response = await Api.post('orders/' + this.state.orderId + '/comments', JSON.stringify(params));
     if (response) {
-      ToastAndroid.showWithGravityAndOffset(
-        'Note added.',
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        0,
-        50,
-      );
+      showToast('Note added.');
     }
   };
 
   render() {
     return (
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+      <KeyboardAvoidingView style={styles.mainContainer} behavior="padding">
         <View style={styles.productsContainer}>
           <Text style={styles.paymentHeading}>Note</Text>
           <TextInput
@@ -69,15 +56,14 @@ export class AddNote extends Component {
             multiline
             numberOfLines={5}
             textAlignVertical={'top'}
-            style={{ borderColor: '#08768A', borderWidth: 1, padding: 15, fontSize: 18, maxHeight: 200, fontFamily: 'proxima-regular', marginTop: 15 }}
+            style={styles.inputStyle}
             onChangeText={(text) => this.setState({ text })}
             value={this.state.text} />
 
           <Picker
             selectedValue={this.state.isVisiblePublic}
-            style={{ height: 50, width: '70%', fontSize: 30, fontFamily: 'proxima-regular', marginTop: 15 }}
-            onValueChange={(itemValue, itemIndex) =>{
-              console.log(itemValue, itemIndex);
+            style={styles.pickerStyle}
+            onValueChange={(itemValue) => {
               this.setState({ isVisiblePublic: itemValue })
             }
             }>
@@ -87,17 +73,9 @@ export class AddNote extends Component {
 
           <TouchableOpacity
             onPress={() => this._onPressAddNote()}
-            style={{
-              width: '100%',
-              alignSelf: 'flex-start',
-              backgroundColor: '#08768A',
-              height: 45,
-              marginTop: 15,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+            style={styles.btnStyle}
           >
-            <Text style={{ color: '#fff', fontSize: 16, fontFamily: 'proxima-regular', }}>Add</Text>
+            <Text style={styles.btnText}>Add</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
