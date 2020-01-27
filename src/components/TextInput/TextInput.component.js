@@ -8,6 +8,9 @@ const LoginTextInput = props => {
       style={styles.inputContainer}
       onChangeText={text => props.onChangeText(text)}
       placeholder={props.placeholder}
+      secureTextEntry={props.secure}
+      KeyboardType={props.type}
+      ReturnKeyType={props.ReturnKeyType}
     />
   );
 };
