@@ -47,7 +47,7 @@ export default class DashBoard extends Component {
 
   componentDidMount = async () => {
     try {
-      let response = await Api.get('orders?searchCriteria[filter_groups][0][filters][0][field]=status& searchCriteria[filter_groups][0][filters][0][value]=pending', '');
+      let response = await Api.get('orders?searchCriteria[filter_groups][0][filters][0][field]=status&searchCriteria[filter_groups][0][filters][0][value]=pending', '');
       
       this.setState({ pendingList: response.items, loading: false });
 

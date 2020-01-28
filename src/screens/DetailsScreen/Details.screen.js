@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import LottieView from 'lottie-react-native';
 import { Header, ProductItem, NoteItem } from '../../components/index';
 import { openMap, openTelephone } from "../../js/Helper";
-import Icon from 'react-native-vector-icons/Ionicons';
 import Api from '../../js/service/api';
 import styles from './style';
 
@@ -19,6 +20,7 @@ export class Details extends Component {
       item: props.navigation.getParam('item'),
       products: [],
       notes: [],
+      loading: true,
     }
     console.log(props.navigation.getParam('item'));
   }
@@ -35,20 +37,37 @@ export class Details extends Component {
       this.setState({ notes: notes });
     }
 
-    this.state.item.items.map(async (element) => {
-      let productResponse = await Api.get('products/' + element.sku + '/media');
-      if (productResponse.length) {
-        element.image = 'https://albagal.com/ecommerce/pub/media/catalog/product/' + productResponse[0].file;
+    var brandsList = await Api.get('products/attributes/brand/options');
+
+    this.state.item.items.map(async (element,key) => {
+      let productResponse = await Api.get('products/' + element.sku);
+      if (productResponse.custom_attributes.findIndex((element) => element.attribute_code == 'image') != -1) {
+        let image = productResponse.custom_attributes.findIndex((element) => element.attribute_code == 'image');
+        element.image = 'https://albagal.com/ecommerce/pub/media/catalog/product/' + productResponse.custom_attributes[image].value;
+      }else {
+        element.image = '';
       }
+
+      let brand = productResponse.custom_attributes.findIndex((element) => element.attribute_code == 'brand');
+      let brandNameKey = brandsList.findIndex((element) => element.value == productResponse.custom_attributes[brand].value)
+      element.brandName = brandsList[brandNameKey].label;
+      
       console.log("product", element);
       let products = this.state.products;
       products.push(element);
       this.setState({ products: products });
+      console.log(this.state.item.items.length , key+1);
+      if(this.state.item.items.length == key+1){
+        this.setState({loading: false})
+      }
     })
   }
 
   render() {
-    const { item, products, notes } = this.state;
+    const { item, products, notes, loading } = this.state;
+    if(loading) {
+      return <LottieView source={require('../../../assets/data.json')} autoPlay loop />; 
+    }
     return (
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.topContainer}>
@@ -124,6 +143,7 @@ export class Details extends Component {
                 currency={item.base_currency_code}
                 qty={element.qty_ordered}
                 name={element.name}
+                brand={element.brandName}
               />
             )
           })
