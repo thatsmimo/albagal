@@ -18,12 +18,11 @@ const Login = props => {
   });
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
 
 
   const getLanguage = async () => {
     setLanguage({ lang: await getData('language'), loader: false });
-    setLoader(false);
   }
 
   const checkUser = async () => {
