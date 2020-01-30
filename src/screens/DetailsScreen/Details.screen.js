@@ -22,9 +22,14 @@ export class Details extends Component {
       notes: [],
       loading: true,
       showStatusModal: false,
-      statusSelected: props.navigation.getParam('item').status
+      statusSelected: props.navigation.getParam('item').status,
+      statusMessage: '',
     };
     console.log(props.navigation.getParam('item'));
+  }
+
+  changeStatus = async () => {
+    let response = await Api.post()
   }
 
   componentDidMount = async () => {
@@ -136,7 +141,6 @@ export class Details extends Component {
             <Text style={styles.boldText}>{item.created_at}</Text>
           </View>
         </View>
-
         <Modal
           presentationStyle="overFullScreen"
           animationType={'fade'}
@@ -156,60 +160,66 @@ export class Details extends Component {
             }}>
 
               <Text style={styles.modalTitles}>Change status</Text>
-              <View style={{ height: 1, backgroundColor: '#ececec', width: '100%' }} />
-              <View style={styles.modelItems}>
-                {
-                  this.state.statusSelected == 'pending' ? <Icon size={25} name={"md-radio-button-on"} /> : <Icon size={25} name={"md-radio-button-off"} />
-                }
+              <TouchableOpacity onPress={() => this.setState({ statusSelected: 'pending', statusMessage: 'Pending' })}>
+                <View style={{ height: 1, backgroundColor: '#ececec', width: '100%' }} />
+                <View style={styles.modelItems}>
+                  {
+                    this.state.statusSelected == 'pending' ? <Icon size={25} name={"md-radio-button-on"} /> : <Icon size={25} name={"md-radio-button-off"} />
+                  }
 
-                <Text style={styles.modalItemText}>Pending</Text>
-              </View>
-              <View style={{ height: 1, backgroundColor: '#ececec', width: '100%' }} />
-              <View style={styles.modelItems}>
-                {
-                  this.state.statusSelected == 'On Hold' ? <Icon size={25} name={"md-radio-button-on"} /> : <Icon size={25} name={"md-radio-button-off"} />
-                }
-                <Text style={styles.modalItemText}>On Hold</Text>
-              </View>
-              <View style={{ height: 1, backgroundColor: '#ececec', width: '100%' }} />
-              <View style={styles.modelItems}>
-              {
-                  this.state.statusSelected == 'Refund' ? <Icon size={25} name={"md-radio-button-on"} /> : <Icon size={25} name={"md-radio-button-off"} />
-                }
-                <Text style={styles.modalItemText}>Refund</Text>
-              </View>
-              <View style={{ height: 1, backgroundColor: '#ececec', width: '100%' }} />
-              <View style={styles.modelItems}>
-              {
-                  this.state.statusSelected == 'Completed' ? <Icon size={25} name={"md-radio-button-on"} /> : <Icon size={25} name={"md-radio-button-off"} />
-                }
-                <Text style={styles.modalItemText}>Completed</Text>
-              </View>
-              <View style={{ height: 1, backgroundColor: '#ececec', width: '100%' }} />
-              <View style={styles.modelItems}>
-              {
-                  this.state.statusSelected == 'Cancel' ? <Icon size={25} name={"md-radio-button-on"} /> : <Icon size={25} name={"md-radio-button-off"} />
-                }
-                <Text style={styles.modalItemText}>Cancel</Text>
-              </View>
+                  <Text style={styles.modalItemText}>Pending</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.setState({ statusSelected: 'holded', statusMessage: 'On Hold' })}>
+                <View style={{ height: 1, backgroundColor: '#ececec', width: '100%' }} />
+                <View style={styles.modelItems}>
+                  {
+                    this.state.statusSelected == 'holded' ? <Icon size={25} name={"md-radio-button-on"} /> : <Icon size={25} name={"md-radio-button-off"} />
+                  }
+                  <Text style={styles.modalItemText}>On Hold</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.setState({ statusSelected: 'processing', statusMessage: 'Processing' })}>
+                <View style={{ height: 1, backgroundColor: '#ececec', width: '100%' }} />
+                <View style={styles.modelItems}>
+                  {
+                    this.state.statusSelected == 'processing' ? <Icon size={25} name={"md-radio-button-on"} /> : <Icon size={25} name={"md-radio-button-off"} />
+                  }
+                  <Text style={styles.modalItemText}>Processing</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.setState({ statusSelected: 'complete', statusMessage: 'Completed' })}>
+                <View style={{ height: 1, backgroundColor: '#ececec', width: '100%' }} />
+                <View style={styles.modelItems}>
+                  {
+                    this.state.statusSelected == 'complete' ? <Icon size={25} name={"md-radio-button-on"} /> : <Icon size={25} name={"md-radio-button-off"} />
+                  }
+                  <Text style={styles.modalItemText}>Completed</Text>
+                </View>
+              </TouchableOpacity>
+              {/* <TouchableOpacity onPress={() => this.setState({ statusSelected: 'Cancel' })}>
+                <View style={{ height: 1, backgroundColor: '#ececec', width: '100%' }} />
+                <View style={styles.modelItems}>
+                  {
+                    this.state.statusSelected == 'Cancel' ? <Icon size={25} name={"md-radio-button-on"} /> : <Icon size={25} name={"md-radio-button-off"} />
+                  }
+                  <Text style={styles.modalItemText}>Cancel</Text>
+                </View>
+              </TouchableOpacity> */}
               <View style={{ height: 1, backgroundColor: '#ececec', width: '100%' }} />
               <View style={{ flexDirection: 'row', justifyContent: 'flex-end', }}>
 
-                <TouchableOpacity style={{ paddingHorizontal: 20, paddingVertical: 2 }}>
+                <TouchableOpacity onPress={() => this.setState({ showStatusModal: false, statusSelected: this.props.navigation.getParam('item').status })} style={{ paddingHorizontal: 20, paddingVertical: 2 }}>
                   <Text style={styles.modalTitles}>Cancel</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{ paddingHorizontal: 20, paddingVertical: 2 }}>
+                <TouchableOpacity onPress={this.changeStatus} style={{ paddingHorizontal: 20, paddingVertical: 2 }}>
                   <Text style={styles.modalTitles}>Save</Text>
                 </TouchableOpacity>
               </View>
             </View>
-
           </View>
-
-
         </Modal>
-
         <View style={styles.productsContainer}>
           <View style={styles.headingWrapper}>
             <Text style={styles.paymentHeading}>Products ({products.length} Items)</Text>

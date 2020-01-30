@@ -26,10 +26,12 @@ const Login = props => {
   }
 
   const checkUser = async () => {
+    setLoader(true);
     let userDetails = await getData('userDetails');
     console.log(userDetails);
     if (userDetails == '' || typeof userDetails == 'undefined' || userDetails == 'undefined') {
-      getLanguage();
+      await getLanguage();
+      setLoader(false);
     } else {
       props.navigation.navigate('Dashboard');
     }
