@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LottieView from 'lottie-react-native';
 import { Header, ProductItem, NoteItem } from '../../components/index';
-import { openMap, openTelephone } from "../../js/Helper";
+import { openMap, openTelephone } from '../../js/Helper';
 import Api from '../../js/service/api';
 import styles from './style';
 
@@ -21,14 +21,16 @@ export class Details extends Component {
       products: [],
       notes: [],
       loading: true,
-    }
+      showStatusModal: false,
+      statusSelected: props.navigation.getParam('item').status
+    };
     console.log(props.navigation.getParam('item'));
   }
 
   componentDidMount = async () => {
     console.log('item', this.state.item);
     let NotesResponse = await Api.get('orders/' + this.state.item.items[0].order_id + '/comments');
-    console.log("notes", NotesResponse);
+    console.log('notes', NotesResponse);
     var notes = [];
     if (NotesResponse.items.length) {
       NotesResponse.items.map((element) => {
@@ -39,34 +41,34 @@ export class Details extends Component {
 
     var brandsList = await Api.get('products/attributes/brand/options');
 
-    this.state.item.items.map(async (element,key) => {
+    this.state.item.items.map(async (element, key) => {
       let productResponse = await Api.get('products/' + element.sku);
       if (productResponse.custom_attributes.findIndex((element) => element.attribute_code == 'image') != -1) {
         let image = productResponse.custom_attributes.findIndex((element) => element.attribute_code == 'image');
         element.image = 'https://albagal.com/ecommerce/pub/media/catalog/product/' + productResponse.custom_attributes[image].value;
-      }else {
+      } else {
         element.image = '';
       }
 
       let brand = productResponse.custom_attributes.findIndex((element) => element.attribute_code == 'brand');
-      let brandNameKey = brandsList.findIndex((element) => element.value == productResponse.custom_attributes[brand].value)
+      let brandNameKey = brandsList.findIndex((element) => element.value == productResponse.custom_attributes[brand].value);
       element.brandName = brandsList[brandNameKey].label;
-      
-      console.log("product", element);
+
+      console.log('product', element);
       let products = this.state.products;
       products.push(element);
       this.setState({ products: products });
-      console.log(this.state.item.items.length , key+1);
-      if(this.state.item.items.length == key+1){
-        this.setState({loading: false})
+      console.log(this.state.item.items.length, key + 1);
+      if (this.state.item.items.length == key + 1) {
+        this.setState({ loading: false });
       }
-    })
-  }
+    });
+  };
 
   render() {
     const { item, products, notes, loading } = this.state;
-    if(loading) {
-      return <LottieView source={require('../../../assets/data.json')} autoPlay loop />; 
+    if (loading) {
+      return <LottieView source={require('../../../assets/data.json')} autoPlay loop />;
     }
     return (
       <ScrollView style={{ flex: 1 }}>
@@ -82,15 +84,16 @@ export class Details extends Component {
             </View>
             <View style={styles.marginTop10}>
               <Text style={styles.dateAndPriceText}>Price</Text>
-              <Text style={styles.dateAndPriceValue}>{item.base_currency_code} {item.base_grand_total}</Text>
+              <Text
+                style={styles.dateAndPriceValue}>{item.base_currency_code} {item.base_grand_total}</Text>
             </View>
           </View>
         </View>
         <View style={styles.statusContainer}>
           <Text style={styles.statusText}>Status {item.status}</Text>
-          <View style={styles.btn} >
+          <TouchableOpacity style={styles.btn} onPress={() => this.setState({ showStatusModal: true })}>
             <Text style={styles.btnText}>Change Status</Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.customerContainer}>
           <Text style={styles.customerHeading}>Customer :</Text>
@@ -106,11 +109,14 @@ export class Details extends Component {
                 style={styles.addressAndPhoneContainer}
                 onPress={() => openMap(item.extension_attributes.shipping_assignments[0].shipping.address.street[0] + ', ' + item.extension_attributes.shipping_assignments[0].shipping.address.city)}>
                 <Icon name="md-pin" size={25} color="#08768A" />
-                <Text style={styles.addressText}>{item.extension_attributes.shipping_assignments[0].shipping.address.street[0] + ', ' + item.extension_attributes.shipping_assignments[0].shipping.address.city + ', Post Code : ' + item.extension_attributes.shipping_assignments[0].shipping.address.postcode}</Text>
+                <Text
+                  style={styles.addressText}>{item.extension_attributes.shipping_assignments[0].shipping.address.street[0] + ', ' + item.extension_attributes.shipping_assignments[0].shipping.address.city + ', Post Code : ' + item.extension_attributes.shipping_assignments[0].shipping.address.postcode}</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.addressAndPhoneContainer} onPress={() => openTelephone(item.extension_attributes.shipping_assignments[0].shipping.address.telephone)}>
+              <TouchableOpacity style={styles.addressAndPhoneContainer}
+                onPress={() => openTelephone(item.extension_attributes.shipping_assignments[0].shipping.address.telephone)}>
                 <Icon name="md-call" size={25} color="#08768A" />
-                <Text style={styles.addressText}>{item.extension_attributes.shipping_assignments[0].shipping.address.telephone}</Text>
+                <Text
+                  style={styles.addressText}>{item.extension_attributes.shipping_assignments[0].shipping.address.telephone}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -118,18 +124,92 @@ export class Details extends Component {
         <View style={styles.productsContainer}>
           <Text style={styles.paymentHeading}>Payment and Shipping Method</Text>
           <View style={styles.shippingElementContainer}>
-            <Text style={styles.regularHeading}>Payment Method:	</Text>
+            <Text style={styles.regularHeading}>Payment Method: </Text>
             <Text style={styles.boldText}>{item.payment.additional_information[0]}</Text>
           </View>
           <View style={styles.shippingElementContainer}>
-            <Text style={styles.regularHeading}>Time Slot:	</Text>
-            <Text style={styles.boldText}></Text>
+            <Text style={styles.regularHeading}>Time Slot: </Text>
+            <Text style={styles.boldText} />
           </View>
           <View style={styles.shippingElementContainer}>
-            <Text style={styles.regularHeading}>Delivery Date:	</Text>
+            <Text style={styles.regularHeading}>Delivery Date: </Text>
             <Text style={styles.boldText}>{item.created_at}</Text>
           </View>
         </View>
+
+        <Modal
+          presentationStyle="overFullScreen"
+          animationType={'fade'}
+          transparent
+          visible={this.state.showStatusModal}>
+          <View style={{
+            flex: 1,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            paddingHorizontal: 10,
+            justifyContent: 'center'
+          }}>
+            <View style={{
+              borderRadius: 10,
+              borderWidth: 1,
+              borderColor: 'rgba(0, 0, 0, 0.6)',
+              backgroundColor: '#fff',
+            }}>
+
+              <Text style={styles.modalTitles}>Change status</Text>
+              <View style={{ height: 1, backgroundColor: '#ececec', width: '100%' }} />
+              <View style={styles.modelItems}>
+                {
+                  this.state.statusSelected == 'pending' ? <Icon size={25} name={"md-radio-button-on"} /> : <Icon size={25} name={"md-radio-button-off"} />
+                }
+
+                <Text style={styles.modalItemText}>Pending</Text>
+              </View>
+              <View style={{ height: 1, backgroundColor: '#ececec', width: '100%' }} />
+              <View style={styles.modelItems}>
+                {
+                  this.state.statusSelected == 'On Hold' ? <Icon size={25} name={"md-radio-button-on"} /> : <Icon size={25} name={"md-radio-button-off"} />
+                }
+                <Text style={styles.modalItemText}>On Hold</Text>
+              </View>
+              <View style={{ height: 1, backgroundColor: '#ececec', width: '100%' }} />
+              <View style={styles.modelItems}>
+              {
+                  this.state.statusSelected == 'Refund' ? <Icon size={25} name={"md-radio-button-on"} /> : <Icon size={25} name={"md-radio-button-off"} />
+                }
+                <Text style={styles.modalItemText}>Refund</Text>
+              </View>
+              <View style={{ height: 1, backgroundColor: '#ececec', width: '100%' }} />
+              <View style={styles.modelItems}>
+              {
+                  this.state.statusSelected == 'Completed' ? <Icon size={25} name={"md-radio-button-on"} /> : <Icon size={25} name={"md-radio-button-off"} />
+                }
+                <Text style={styles.modalItemText}>Completed</Text>
+              </View>
+              <View style={{ height: 1, backgroundColor: '#ececec', width: '100%' }} />
+              <View style={styles.modelItems}>
+              {
+                  this.state.statusSelected == 'Cancel' ? <Icon size={25} name={"md-radio-button-on"} /> : <Icon size={25} name={"md-radio-button-off"} />
+                }
+                <Text style={styles.modalItemText}>Cancel</Text>
+              </View>
+              <View style={{ height: 1, backgroundColor: '#ececec', width: '100%' }} />
+              <View style={{ flexDirection: 'row', justifyContent: 'flex-end', }}>
+
+                <TouchableOpacity style={{ paddingHorizontal: 20, paddingVertical: 2 }}>
+                  <Text style={styles.modalTitles}>Cancel</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{ paddingHorizontal: 20, paddingVertical: 2 }}>
+                  <Text style={styles.modalTitles}>Save</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+          </View>
+
+
+        </Modal>
+
         <View style={styles.productsContainer}>
           <View style={styles.headingWrapper}>
             <Text style={styles.paymentHeading}>Products ({products.length} Items)</Text>
@@ -145,7 +225,7 @@ export class Details extends Component {
                 name={element.name}
                 brand={element.brandName}
               />
-            )
+            );
           })
           }
         </View>
@@ -153,9 +233,12 @@ export class Details extends Component {
           <View style={styles.headingWrapper}>
             <Text style={styles.paymentHeading}>Notes</Text>
             <TouchableOpacity style={{ marginRight: 35, width: 100, alignItems: 'flex-end' }}
-              onPress={() => this.props.navigation.navigate('AddNote', { "orderId": item.items[0].order_id, "status": item.status })}
+              onPress={() => this.props.navigation.navigate('AddNote', {
+                'orderId': item.items[0].order_id,
+                'status': item.status,
+              })}
             >
-              <View style={[styles.btnAdd, { flexDirection: 'row' }]} >
+              <View style={[styles.btnAdd, { flexDirection: 'row' }]}>
                 <Icon size={30} name="md-add-circle-outline" color='#08768A' />
                 <Text style={styles.btnText}>Add Note</Text>
               </View>
@@ -168,12 +251,12 @@ export class Details extends Component {
                 note={element.comment}
                 time={element.created_at}
               />
-            )
+            );
           })
           }
         </View>
-        <View style={styles.btmHeight}></View>
-      </ScrollView >
+        <View style={styles.btmHeight} />
+      </ScrollView>
     );
   }
 }

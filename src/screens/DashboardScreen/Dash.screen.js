@@ -46,24 +46,37 @@ export default class DashBoard extends Component {
   }
 
   componentDidMount = async () => {
+    this._getStatusList();
+    this.focusListener = this.props.navigation.addListener(
+      "willFocus",
+      () => {
+        this._getStatusList();
+      });
+  }
+
+  _getStatusList = async () => {
     try {
       let response = await Api.get('orders?searchCriteria[filter_groups][0][filters][0][field]=status&searchCriteria[filter_groups][0][filters][0][value]=pending', '');
-      
+
       this.setState({ pendingList: response.items, loading: false });
 
       let processingResponse = await Api.get('orders?searchCriteria[filter_groups][0][filters][0][field]=status&searchCriteria[filter_groups][0][filters][0][value]=processing', '');
 
       let completedResponse = await Api.get('orders?searchCriteria[filter_groups][0][filters][0][field]=status&searchCriteria[filter_groups][0][filters][0][value]=complete', '');
-      
+
       this.setState({
         processing: processingResponse.items,
         delivered: completedResponse.items
       })
-      console.log("completedResponseResponse",completedResponse);
+      console.log("completedResponseResponse", completedResponse);
     } catch (error) {
       console.log(error);
     }
+  };
 
+  componentWillUnmount() {
+    // Remove the event listener
+    this.focusListener.remove();
   }
 
   FirstRoute = () => {
@@ -95,7 +108,7 @@ export default class DashBoard extends Component {
   };
 
   SecondRoute = () => {
-    if(this.state.processing.length == 0){
+    if (this.state.processing.length == 0) {
       return <LottieView source={require('../../../assets/data.json')} autoPlay loop />;
     }
     return (
@@ -125,7 +138,7 @@ export default class DashBoard extends Component {
 
 
   ThirdRoute = () => {
-    if(this.state.delivered.length == 0){
+    if (this.state.delivered.length == 0) {
       return <LottieView source={require('../../../assets/data.json')} autoPlay loop />;
     }
     return (
@@ -166,8 +179,8 @@ export default class DashBoard extends Component {
           navigationState={this.state}
           renderScene={SceneMap({
             pending: () => this.FirstRoute(),
-            processing:() => this.SecondRoute(),
-            delivered:() => this.ThirdRoute(),
+            processing: () => this.SecondRoute(),
+            delivered: () => this.ThirdRoute(),
           })}
           onIndexChange={index => this.setState({ index })}
           initialLayout={{ width: Dimensions.get('window').width }}
