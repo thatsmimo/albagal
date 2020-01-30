@@ -11,7 +11,7 @@ export default StyleSheet.create({
 	statusContainer: { marginLeft: 35, marginTop: 20, flexDirection: 'row', justifyContent: 'space-between' },
 	statusText: { color: '#f2893c', fontSize: 22, fontFamily: 'proxima-regular' },
 	btn: { marginRight: 32, borderColor: '#000', borderWidth: 1, borderRadius: 8, padding: 5 },
-	btnAdd: { borderColor: '#000', borderWidth: 1, borderRadius: 8, padding: 5,alignItems:'center' },
+	btnAdd: { borderColor: '#000', borderWidth: 1, borderRadius: 8, padding: 5, alignItems: 'center' },
 	btnText: { fontFamily: 'proxima-regular', padding: 5 },
 	customerContainer: { marginTop: 25, marginLeft: 35 },
 	customerHeading: { fontSize: 22, fontFamily: 'proxima-bold', color: '#08768A' },
@@ -30,4 +30,8 @@ export default StyleSheet.create({
 	boldText: { fontSize: 18, fontFamily: 'proxima-bold' },
 	headingWrapper: { flexDirection: "row", justifyContent: 'space-between' },
 	btmHeight: { height: 30 },
+	modelItems: { paddingHorizontal: 20, paddingVertical: 5, flexDirection: 'row', alignItems: 'center' },
+	modalItemText: { fontSize: 18, fontFamily: 'proxima-regular', marginLeft: 15 },
+	modalTitles: { fontSize: 20, fontFamily: 'proxima-semibold', color: '#08768A', paddingVertical: 10, justifyContent: 'center', alignSelf: 'center' },
+
 })

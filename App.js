@@ -1,9 +1,8 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
+ * React Native App
+ * @author
+ * Kazi Hasan Ali
+ * Mainak Shil
  */
 
 import React from 'react';
@@ -14,7 +13,7 @@ import AppContainer from './src/navigation/MainNav';
 const App = () => {
   return (
     <>
-      <StatusBar backgroundColor="#00768B" barStyle="dark-content" />
+      <StatusBar backgroundColor="#00768B" barStyle="light-content" />
       <AppContainer />
     </>
   );
