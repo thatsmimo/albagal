@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableNativeFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { __ } from "../../js/constants";
-import {getData, removeData} from '../../js/Helper'
+import { getData, removeData } from '../../js/Helper'
 
 const SideBar = (props) => {
 
@@ -18,13 +18,13 @@ const SideBar = (props) => {
 
   const getUserDetails = async () => {
     let userDetails = JSON.parse(await getData('userDetails'));
-    setName(userDetails.firstname+' '+userDetails.lastname);
+    setName(userDetails.firstname + ' ' + userDetails.lastname);
   }
 
   useEffect(() => {
     getUserDetails()
     getLanguage();
-  });
+  },[]);
 
   return (
     <View style={styles.mainContainer}>
@@ -40,12 +40,13 @@ const SideBar = (props) => {
           </View>
         </TouchableNativeFeedback>
         <TouchableNativeFeedback
+          onPress={() => props.navigation.navigate('SetLanguage')}
           background={TouchableNativeFeedback.SelectableBackground()}>
           <View style={styles.menuEachView}>
             <Text style={styles.menuItemText}>{__('Change Language', language.lang)}</Text>
           </View>
         </TouchableNativeFeedback>
-        <TouchableNativeFeedback onPress={async() => {
+        <TouchableNativeFeedback onPress={async () => {
           await removeData('userDetails');
           props.navigation.navigate('Login');
         }}

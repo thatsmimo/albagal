@@ -2,16 +2,17 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Card from '../Card/Card.component';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { openMap, openTelephone } from '../../js/Helper';
+import { openMap, openTelephone, dateFormatter } from '../../js/Helper';
+import { __ } from '../../js/constants';
 
 const DashItem = props => {
   return (
     <TouchableOpacity onPress={props.onPress} style={styles.TouchableOpacity}>
-      <Card >
+      <Card>
         <View style={styles.container} />
         <View style={styles.leftBorder}>
           <Text style={styles.priceText}>{props.currency} {props.totalPrice}</Text>
-          <Text style={styles.dateText}>22 Jan, 2020</Text>
+          <Text style={styles.dateText}>{dateFormatter(props.date)}</Text>
         </View>
         <View style={styles.rightDiv}>
           <Text style={styles.nameText}>{props.name}</Text>
@@ -22,20 +23,20 @@ const DashItem = props => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.phoneDiv} onPress={() => openTelephone(props.phone)}>
-            <Icon name="md-call" size={30} color='#08768A' />
+            <Icon name="md-call" size={30} color='#08768A'/>
             <Text style={styles.phoneText}>{props.phone}</Text>
           </TouchableOpacity>
           <View style={styles.rightButtomDiv}>
             <View>
-              <Text style={styles.rightBtmItemHeadText}>Order Id</Text>
+              <Text style={styles.rightBtmItemHeadText}>{__('Order Id', props.language)}</Text>
               <Text style={styles.rightBtmItemitemText}>{props.orderId}</Text>
             </View>
             <View>
-              <Text style={styles.rightBtmItemHeadText}>Item</Text>
+              <Text style={styles.rightBtmItemHeadText}>{__('Item', props.language)}</Text>
               <Text style={styles.rightBtmItemitemText}>{props.itemCount}</Text>
             </View>
             <View>
-              <Text style={styles.rightBtmItemHeadText}>Status</Text>
+              <Text style={styles.rightBtmItemHeadText}>{__('Status', props.language)}</Text>
               <Text style={styles.rightBtmItemitemText}>{props.status}</Text>
             </View>
           </View>
@@ -91,6 +92,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontFamily: 'proxima-regular',
     fontSize: 15,
+    flex: 1
   },
   phoneDiv: {
     width: '80%',
@@ -115,12 +117,15 @@ const styles = StyleSheet.create({
     color: '#40454a',
     fontSize: 15,
     textAlign: 'center',
+    maxWidth: 90,
+    flex: 1,
   },
   rightBtmItemitemText: {
     fontFamily: 'proxima-bold',
     fontSize: 15,
     color: '#646a6f',
     textAlign: 'center',
+    marginTop: 5
   },
 });
 
