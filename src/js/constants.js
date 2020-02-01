@@ -34,10 +34,32 @@ export const language = {
   'Add Notes': 'إضافة ملاحظات',
   'Password': 'كلمه السر',
   'Username': 'اسم المستخدم',
-  'Login': 'تسجيل الدخول'
+  'Login': 'تسجيل الدخول',
+  'Arabic': 'عربى',
+  'Order List': 'لائحة الطلبات',
+  'Add Note': 'اضف ملاحظة',
+  'Processing': 'معالجة',
+  'Delivered': 'تم التوصيل',
+  'On Hold': 'في الانتظار',
+  'Completed': 'منجز',
+  'Cancel': 'إلغاء',
+  'Save': 'حفظ',
+  'Note': 'ملحوظة',
+  'Add note': 'اضف ملاحظة',
+  'Private': 'نشر',
+  'Public': 'عامة',
+  'Add': 'إضافة',
+  'Note added.': 'ملاحظة المضافة.',
+  'Please add your note.': 'يرجى إضافة ملاحظتك.',
+  'Updated': 'محدث',
+  'Invalid Credentials': 'بيانات الاعتماد غير صالحة',
 }
 
 export const __ = (param, lang) => {
+
+  if (lang == '' || typeof lang == 'undefined' || lang == 'undefined') {
+    return param;
+  }
 
   if (lang == 'ar')
     return language[param];

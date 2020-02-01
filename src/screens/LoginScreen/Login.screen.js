@@ -7,33 +7,42 @@ import { __ } from '../../js/constants';
 import { storeData, getData, showToast } from '../../js/Helper';
 import Api from '../../js/service/api'
 
-
-let language = 'en';
-
 const Login = props => {
 
   const [language, setLanguage] = useState({
-    lang: '',
+    lang: 'en',
     loader: true
   });
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('kazhasanali@gmail.com');
+  const [password, setPassword] = useState('hasan900');
   const [loader, setLoader] = useState(false);
 
+  useEffect(() => {
+    checkUser();
+  }, []);
 
   const getLanguage = async () => {
-    setLanguage({ lang: await getData('language'), loader: false });
+    let lang = await getData('language');
+    if (lang == '' || typeof lang == 'undefined' || lang == 'undefined') {
+      setLanguage({ lang: 'en', loader: false });
+    } else {
+      setLanguage({ lang, loader: false });
+    }
   }
 
   const checkUser = async () => {
     setLoader(true);
-    let userDetails = await getData('userDetails');
-    console.log(userDetails);
-    if (userDetails == '' || typeof userDetails == 'undefined' || userDetails == 'undefined') {
-      await getLanguage();
-      setLoader(false);
-    } else {
-      props.navigation.navigate('Dashboard');
+    try {
+      let userDetails = await getData('userDetails');
+      console.log('checkUser: ', userDetails);
+      if (userDetails == '' || typeof userDetails == 'undefined' || userDetails == 'undefined') {
+        await getLanguage();
+        setLoader(false);
+      } else {
+        props.navigation.navigate('Dashboard');
+      }
+    } catch (e) {
+      console.log('error in login : ', e);
     }
   }
 
@@ -46,19 +55,14 @@ const Login = props => {
     let response = await Api.post('integration/customer/token', JSON.stringify(payload));
     if (typeof response == 'object') {
       setLoader(false);
-      showToast('Invalid Credentials');
+      showToast(__('Invalid Credentials', language));
     } else {
-      console.log(response);
       let userDetails = await Api.getUserDetails('customers/me', response);
       await storeData('userDetails', JSON.stringify(userDetails));
       props.navigation.navigate('Dashboard');
       setLoader(false);
     }
   }
-
-  useEffect(() => {
-    checkUser();
-  });
 
   if (loader) {
     return <LottieView source={require('../../../assets/data.json')} autoPlay loop />;
@@ -72,16 +76,15 @@ const Login = props => {
         />
         <View style={styles.inputBoxesContainer}>
           <View style={styles.inputBoxView}>
-            <TextInput value={username} placeholder={__('Username', language)} type='email-address' onChangeText={(text) => setUsername(text)} />
+            <TextInput value={username} placeholder={__('Username', language.lang)} type='email-address' onChangeText={(text) => setUsername(text)} />
           </View>
           <View style={styles.inputBoxView}>
-            <TextInput value={password} secure={true} ReturnKeyType='done' placeholder={__('Password', language)} onChangeText={(text) => setPassword(text)} />
+            <TextInput value={password} secure={true} ReturnKeyType='done' placeholder={__('Password', language.lang)} onChangeText={(text) => setPassword(text)} />
           </View>
           <TouchableOpacity
             style={styles.touchableBtnLogin}
-            // onPress={() => props.navigation.navigate('Dashboard')}>
             onPress={() => hitApi()}>
-            <Text style={styles.loginText}>{__('Login', language)}</Text>
+            <Text style={styles.loginText}>{__('Login', language.lang)}</Text>
           </TouchableOpacity>
           <View />
         </View>

@@ -7,6 +7,8 @@ export const storeData = async (key, value) => {
     await AsyncStorage.setItem(key, value);
   } catch (e) {
     // saving error
+    console.log('aaaa');
+    
     console.log(e)
   }
 };
@@ -21,6 +23,8 @@ export let getData = async (key) => {
   } catch (e) {
     // error reading value
     console.log(e);
+    console.log('bbbb');
+
     return "";
   }
 };
@@ -30,6 +34,8 @@ export const removeData = async (key) => {
     await AsyncStorage.removeItem(key);
   } catch (error) {
     console.log(error);
+    console.log('cccc');
+
   }
 }
 
@@ -52,4 +58,20 @@ export const showToast = (text) => {
     0,
     50,
   );
+};
+
+// universal method to show
+export const dateFormatter = (date) => {
+  let datePrev = new Date(date);
+  if (datePrev == 'Invalid Date') {
+    return null;
+  }
+  let monthNames = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+  let MonthName = monthNames[datePrev.getMonth()];
+  let DateNumber = datePrev.getDate();
+  let Year = datePrev.getFullYear();
+  return DateNumber + ' '+ MonthName + ', ' + Year;
 };

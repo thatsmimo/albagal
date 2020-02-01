@@ -17,6 +17,7 @@ const AfterLogin = createStackNavigator(
     Dashboard: { screen: Screens.Dashboard, },
     Details: { screen: Screens.Details, },
     AddNote: { screen: Screens.AddNote, },
+    SetLanguage: { screen: Screens.SetLanguage },
   },
 );
 

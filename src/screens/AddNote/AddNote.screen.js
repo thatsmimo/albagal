@@ -3,12 +3,14 @@ import { Text, View, TextInput, TouchableOpacity, Picker, KeyboardAvoidingView }
 import { Header } from '../../components/index';
 import Api from '../../js/service/api';
 import styles from './style';
-import { showToast } from "../../js/Helper";
+import { showToast, getData } from "../../js/Helper";
+import { __ } from '../../js/constants';
+import LottieView from 'lottie-react-native';
 
 export class AddNote extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      header: () => <Header title="Order List" navigation={navigation} backBtn={true} />,
+      header: () => <Header title="Add Note" navigation={navigation} backBtn={true} />,
     };
   };
 
@@ -19,13 +21,18 @@ export class AddNote extends Component {
       text: '',
       isVisiblePublic: 0,
       status: props.navigation.getParam('status'),
+      language: '',
+      loading: true
     };
   }
 
+  componentDidMount = () => {
+    this._getLang();
+  }
   _onPressAddNote = async () => {
 
     if (this.state.text == '') {
-      showToast('Please add your note.');
+      showToast(__('Please add your note.', this.state.language));
       return;
     }
 
@@ -42,44 +49,59 @@ export class AddNote extends Component {
 
     let response = await Api.post('orders/' + this.state.orderId + '/comments', JSON.stringify(params));
     if (response) {
-      showToast('Note added.');
+      showToast(__('Note added.', this.state.language));
     }
   };
 
+  _getLang = async () => {
+    let lang = await getData('language');
+
+    if (lang == '' || typeof lang == 'undefined' || lang == 'undefined') {
+      lang = 'en';
+    }
+
+    this.setState({ language: lang, loading: false });
+  }
+
   render() {
-    return (
-      <KeyboardAvoidingView style={styles.mainContainer} behavior="padding">
-        <View style={styles.productsContainer}>
-          <Text style={styles.paymentHeading}>Note</Text>
-          <TextInput
-            placeholder="Add note"
-            multiline
-            numberOfLines={5}
-            textAlignVertical={'top'}
-            style={styles.inputStyle}
-            onChangeText={(text) => this.setState({ text })}
-            value={this.state.text} />
+    const { language } = this.state;
+    if (this.state.loading) {
+      return <LottieView source={require('../../../assets/data.json')} autoPlay loop />;
+    } else {
+      return (
+        <KeyboardAvoidingView style={styles.mainContainer} behavior="padding">
+          <View style={styles.productsContainer}>
+            <Text style={styles.paymentHeading}>{__('Note', language)}</Text>
+            <TextInput
+              placeholder={__('Add note', language)}
+              multiline
+              numberOfLines={5}
+              textAlignVertical={'top'}
+              style={styles.inputStyle}
+              onChangeText={(text) => this.setState({ text })}
+              value={this.state.text} />
 
-          <Picker
-            selectedValue={this.state.isVisiblePublic}
-            style={styles.pickerStyle}
-            onValueChange={(itemValue) => {
-              this.setState({ isVisiblePublic: itemValue })
-            }
-            }>
-            <Picker.Item label="Private" value="0" />
-            <Picker.Item label="Public" value="1" />
-          </Picker>
+            <Picker
+              selectedValue={this.state.isVisiblePublic}
+              style={styles.pickerStyle}
+              onValueChange={(itemValue) => {
+                this.setState({ isVisiblePublic: itemValue })
+              }
+              }>
+              <Picker.Item label={__('Private', language)} value="0" />
+              <Picker.Item label={__('Public', language)} value="1" />
+            </Picker>
 
-          <TouchableOpacity
-            onPress={() => this._onPressAddNote()}
-            style={styles.btnStyle}
-          >
-            <Text style={styles.btnText}>Add</Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
-    );
+            <TouchableOpacity
+              onPress={() => this._onPressAddNote()}
+              style={styles.btnStyle}
+            >
+              <Text style={styles.btnText}>{__('Add', language)}</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      );
+    }
   }
 }
 

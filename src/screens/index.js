@@ -9,3 +9,6 @@ export const Details = _Details;
 
 import _AddNote from './AddNote/AddNote.screen'
 export const AddNote = _AddNote;
+
+import _SetLanguage from './SetLanguage/SetLanguage.screen'
+export const SetLanguage = _SetLanguage;
