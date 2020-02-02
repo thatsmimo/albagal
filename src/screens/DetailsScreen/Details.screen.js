@@ -49,8 +49,10 @@ export class Details extends Component {
     let response = await Api.post('orders/' + this.state.item.items[0].order_id + '/comments', JSON.stringify(params));
     if (response) {
       showToast(__('Updated', this.state.language));
+      this.props.navigation.goBack();
     }
     this.setState({ showStatusModal: false });
+    showToast('Something went wrong');
   }
 
   componentDidMount = async () => {
