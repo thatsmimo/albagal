@@ -13,8 +13,8 @@ const Login = props => {
     lang: 'en',
     loader: true
   });
-  const [username, setUsername] = useState('kazhasanali@gmail.com');
-  const [password, setPassword] = useState('hasan900');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [loader, setLoader] = useState(false);
 
   useEffect(() => {

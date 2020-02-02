@@ -147,7 +147,7 @@ export default class DashBoard extends Component {
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <FlatList
           data={this.state.processing}
-          extraData={this.state.pendingList}
+          extraData={this.state.processing}
           onRefresh={() => this._onRefresh()}
           refreshing={this.state.refreshingLoader}
           initialNumToRender={10}
@@ -182,7 +182,7 @@ export default class DashBoard extends Component {
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <FlatList
-          data={this.state.processing}
+          data={this.state.delivered}
           extraData={this.state.delivered}
           onRefresh={() => this._onRefresh()}
           refreshing={this.state.refreshingLoader}
