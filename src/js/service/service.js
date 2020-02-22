@@ -60,6 +60,7 @@ export default class API {
         };
       }
       console.log('body', options)
+      console.log('url', url)
       fetch(url, options)
         .then(response => response.json())
         .then(responseJson => {

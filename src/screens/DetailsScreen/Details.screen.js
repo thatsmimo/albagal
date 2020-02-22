@@ -48,9 +48,10 @@ export class Details extends Component {
     if (response) {
       showToast(__('Updated', this.state.language));
       this.props.navigation.goBack();
+    } else {
+      showToast('Something went wrong');
     }
     this.setState({ showStatusModal: false });
-    showToast('Something went wrong');
   }
 
   componentDidMount = async () => {

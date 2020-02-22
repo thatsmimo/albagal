@@ -10,7 +10,7 @@ const ProductItem = (props) => {
         <Image style={{ height: 80, width: 80 }} resizeMode='center' source={{ uri: props.image }}></Image>
         <View style={{ width: '65%' }}>
           <Text style={{ fontSize: 20, fontFamily: 'proxima-regular', marginLeft: 10 }} ellipsizeMode='tail' numberOfLines={2}>{props.name}</Text>
-          <Text style={{ fontSize: 18, fontFamily: 'proxima-regular', marginLeft: 10 }}>{__('Qty', props.language)} : {props.brand}</Text>
+          <Text style={{ fontSize: 18, fontFamily: 'proxima-regular', marginLeft: 10 }}>{__('Brand', props.language)} : {props.brand}</Text>
           <View style={{ flexDirection: 'row', marginLeft: 10, justifyContent: 'space-between', marginTop: 10, marginBottom: 7 }}>
             <Text style={{ fontSize: 16, fontFamily: 'proxima-regular' }}>{props.currency} {props.price}</Text>
             <Text style={{ fontSize: 16, fontFamily: 'proxima-regular' }}>{__('Qty', props.language)} :{props.qty}</Text>
