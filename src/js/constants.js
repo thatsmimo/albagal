@@ -53,6 +53,7 @@ export const language = {
   'Please add your note.': 'يرجى إضافة ملاحظتك.',
   'Updated': 'محدث',
   'Invalid Credentials': 'بيانات الاعتماد غير صالحة',
+  'Brand': 'علامة تجارية',
 }
 
 export const __ = (param, lang) => {
